@@ -1,0 +1,28 @@
+<!-- res/menu/popup_menu_radio.xml -->
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/sortByDateAdded"
+        android:title="@string/date_added"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/sortByTitle"
+        android:title="@string/title"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/sortBySize"
+        android:title="@string/size"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/sortByDuration"
+        android:title="@string/duration"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/sortByDesc"
+        android:title="@string/descending"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/sortByAsc"
+        android:title="@string/ascending"
+        app:showAsAction="ifRoom" />
+</menu>

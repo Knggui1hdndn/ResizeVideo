@@ -1,0 +1,185 @@
+<!-- activity_main.xml -->
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="start"
+    android:fitsSystemWindows="true"
+    tools:context=".MainActivity"
+    tools:openDrawer="start">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:background="@color/maintream"
+            app:title="Reduce video size"
+            app:titleTextColor="@color/white" />
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="5dp">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="10">
+
+                <LinearLayout
+                    android:id="@+id/compressVideo"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_weight="5"
+                    android:background="@drawable/corners_troke"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="5dp">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="50dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/compress"
+                        android:tint="@color/maintream" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        style="@style/textMain"
+                        android:text="Compress Video"
+                        tools:ignore="HardcodedText" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/cut_compress"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_weight="5"
+                    android:background="@drawable/corners_troke"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="5dp">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="50dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/cut"
+                        android:tint="@color/maintream" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        style="@style/textMain"
+                        android:text="Cut + Compress"
+                        tools:ignore="HardcodedText" />
+                </LinearLayout>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="10">
+
+                <LinearLayout
+                    android:id="@+id/fast_forward"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_weight="5"
+                    android:background="@drawable/corners_troke"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="5dp">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="50dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/flash"
+                        android:tint="@color/maintream" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        style="@style/textMain"
+                        android:text="Fast Forward"
+                        tools:ignore="HardcodedText" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/extract_audio"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_weight="5"
+                    android:background="@drawable/corners_troke"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="5dp">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="50dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/audio"
+                        android:tint="@color/maintream" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        style="@style/textMain"
+                        android:text="Extract Audio"
+                        tools:ignore="HardcodedText" />
+                </LinearLayout>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:background="@drawable/corners_troke_gray"
+                android:paddingHorizontal="20dp"
+                android:paddingVertical="15dp">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/appCompatImageView2"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:paddingTop="5dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/folder"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/textMain"
+                    android:layout_marginStart="15dp"
+                    android:text="Compressed Videos"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/appCompatImageView2"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_arrow_24"
+                    android:tint="@color/maintream"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navigation_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:fitsSystemWindows="true"
+        app:headerLayout="@layout/header"
+        app:menu="@menu/menu_draw" />
+
+</androidx.drawerlayout.widget.DrawerLayout>

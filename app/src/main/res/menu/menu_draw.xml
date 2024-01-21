@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+    <group android:checkableBehavior="single" >
+        <item
+            android:id="@+id/home"
+            android:icon="@drawable/home"
+            android:title="@string/home_title"
+            app:showAsAction="always" />
+        <item
+            android:id="@+id/compressVideos"
+            android:icon="@drawable/compress"
+            android:title="@string/compressed_videos_title"
+            app:showAsAction="always" />
+        <item
+            android:id="@+id/audio"
+            android:icon="@drawable/audio"
+            android:title="@string/extracted_audios_title"
+            app:showAsAction="always" />
+        <item
+            android:id="@+id/premium"
+            android:icon="@drawable/premium"
+            android:title="@string/upgrade_to_premium_title"
+            app:showAsAction="always" />
+        <item
+            android:id="@+id/settings"
+            android:icon="@drawable/settings"
+            android:title="@string/settings_title"
+            app:showAsAction="always" />
+
+    </group>
+    <item
+        android:title="@string/others"
+        app:showAsAction="ifRoom">
+        <menu>
+            <item
+                android:id="@+id/star"
+                android:icon="@drawable/star"
+                android:title="@string/rate_app_title"
+                app:showAsAction="always" />
+            <item
+                android:id="@+id/send"
+                android:icon="@drawable/send"
+                android:title="@string/share_title"
+                app:showAsAction="always" />
+            <item
+                android:id="@+id/info"
+                android:icon="@drawable/info"
+                android:title="@string/contact_us_title"
+                app:showAsAction="always" />
+        </menu>
+    </item>
+
+
+</menu>

@@ -1,0 +1,39 @@
+<resources>
+    <string name="app_name">ResizeVideo</string>
+    <string name="header_title">Reduce video size</string>
+    <string name="home_title">Home</string>
+    <string name="compressed_videos_title">Compressed Videos</string>
+    <string name="extracted_audios_title">Extracted Audios</string>
+    <string name="upgrade_to_premium_title">Upgrade To Premium</string>
+    <string name="settings_title">Settings</string>
+    <string name="rate_app_title">Rate app</string>
+    <string name="share_title">Share</string>
+    <string name="contact_us_title">Contact Us</string>
+    <string name="others">Others</string>
+    <string name="date_added">Date added</string>
+    <string name="title">Title</string>
+    <string name="size">Size</string>
+    <string name="duration">Duration</string>
+    <string name="descending">Descending</string>
+    <string name="ascending">Ascending</string>
+    <string name="label_smail_size">Smail Size</string>
+    <string name="label_medium">Medium Size</string>
+    <string name="label_large">Large Size</string>
+    <string name="label_best">Best Quality</string>
+    <string name="label_custom_resolution">Custom Resolution</string>
+
+    <string name="description_smail_size">Acceptable quality</string>
+    <string name="description_medium">Good quality</string>
+    <string name="description_large">Better quality</string>
+    <string name="description_best">Best quality</string>
+    <string name="description_custom_resolution">Select resolution for the video</string>
+    <string name="compress">Compress</string>
+
+    <string-array name="list_size" translatable="true">
+        <item>low resolution</item>
+        <item>medium resolution</item>
+        <item>large resolution</item>
+        <item>original resolution</item>
+     </string-array>
+
+</resources>

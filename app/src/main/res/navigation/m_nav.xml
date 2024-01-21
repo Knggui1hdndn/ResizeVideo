@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/m_nav"
+    app:startDestination="@id/mainPickerFragment">
+
+    <fragment
+        android:id="@+id/pickerFragment"
+        android:name="com.tearas.resizevideo.ui.video_pickers.VideoFolderFragment"
+        android:label="PickerFragment"
+        tools:layout="@layout/fragment_video_folder">
+
+        <argument
+            android:name="FolderInfo"
+            app:argType="com.tearas.resizevideo.model.FolderInfo" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/mainPickerFragment"
+        android:name="com.tearas.resizevideo.ui.video_pickers.MainPickerFragment"
+        android:label="MainPickerFragment"
+        tools:layout="@layout/fragment_main_picker">
+
+        <action
+            android:id="@+id/action_mainPickerFragment_to_pickerFragment"
+            app:destination="@id/pickerFragment"
+            app:enterAnim="@anim/enter_transition"
+            app:exitAnim="@anim/exit_transition">
+
+        </action>
+    </fragment>
+</navigation>

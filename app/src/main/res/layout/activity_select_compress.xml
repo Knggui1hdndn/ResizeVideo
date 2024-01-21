@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.select_compress.SelectCompressActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/maintream"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/baseline_arrow_back_24"
+        app:title="Select Compression"
+        app:titleTextColor="@color/white" />
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:padding="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayoutCompat"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar2">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/viewPager"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" />
+
+            <me.relex.circleindicator.CircleIndicator3
+                android:id="@+id/indicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="5dp" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/optionSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/corners_troke_gray_2"
+                android:padding="15dp">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/labelTextView1"
+                    style="@style/label_select"
+                    android:text="@string/label_smail_size"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/descriptionTextView1"
+                    style="@style/description_select"
+                    android:text="@string/description_smail_size"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/labelTextView1" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/resolutionTextView1"
+                    style="@style/description_select"
+                    android:text="100x100"
+                    app:layout_constraintBottom_toBottomOf="@+id/descriptionTextView1"
+                    app:layout_constraintStart_toEndOf="@+id/descriptionTextView1"
+                    app:layout_constraintTop_toTopOf="@+id/descriptionTextView1" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/optionMedium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/corners_troke_gray_2"
+                android:padding="15dp">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/labelTextView2"
+                    style="@style/label_select"
+                    android:text="@string/label_medium"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/descriptionTextView2"
+                    style="@style/description_select"
+                    android:text="@string/description_medium"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/labelTextView2" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/resolutionTextView2"
+                    style="@style/description_select"
+                    android:text="100x100"
+                    app:layout_constraintBottom_toBottomOf="@+id/descriptionTextView2"
+                    app:layout_constraintStart_toEndOf="@+id/descriptionTextView2"
+                    app:layout_constraintTop_toTopOf="@+id/descriptionTextView2" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/optionLarge"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/corners_troke_gray_2"
+                android:padding="15dp">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/labelTextView3"
+                    style="@style/label_select"
+                    android:text="@string/label_large"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/descriptionTextView3"
+                    style="@style/description_select"
+                    android:text="@string/description_large"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/labelTextView3" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/resolutionTextView3"
+                    style="@style/description_select"
+                    android:text="100x100"
+                    app:layout_constraintBottom_toBottomOf="@+id/descriptionTextView3"
+                    app:layout_constraintStart_toEndOf="@+id/descriptionTextView3"
+                    app:layout_constraintTop_toTopOf="@+id/descriptionTextView3" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/optionBest"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/corners_troke_gray_2"
+                android:padding="15dp">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/labelTextView4"
+                    style="@style/label_select"
+                    android:text="@string/label_best"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/descriptionTextView4"
+                    style="@style/description_select"
+                    android:text="@string/description_best"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/labelTextView4" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/resolutionTextView4"
+                    style="@style/description_select"
+                    android:text="100x100"
+                    app:layout_constraintBottom_toBottomOf="@+id/descriptionTextView4"
+                    app:layout_constraintStart_toEndOf="@+id/descriptionTextView4"
+                    app:layout_constraintTop_toTopOf="@+id/descriptionTextView4" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/optionCustom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/corners_troke_gray_2"
+                android:padding="15dp">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/labelTextView5"
+                    style="@style/label_select"
+                    android:text="@string/label_custom_resolution"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/descriptionTextView5"
+                    style="@style/description_select"
+                    android:text="@string/description_custom_resolution"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/labelTextView5" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/resolutionTextView5"
+                    style="@style/description_select"
+                     app:layout_constraintBottom_toBottomOf="@+id/descriptionTextView5"
+                    app:layout_constraintStart_toEndOf="@+id/descriptionTextView5"
+                    app:layout_constraintTop_toTopOf="@+id/descriptionTextView5" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </androidx.core.widget.NestedScrollView>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/linearLayoutCompat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            app:cardCornerRadius="25sp">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/maintream"
+                android:text="@string/compress"
+                android:textAllCaps="false"
+                android:id="@+id/compress"
+                android:textColor="@color/white" />
+        </androidx.cardview.widget.CardView>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</androidx.constraintlayout.widget.ConstraintLayout>
