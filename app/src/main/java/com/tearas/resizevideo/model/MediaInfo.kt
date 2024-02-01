@@ -2,7 +2,7 @@ package com.tearas.resizevideo.model
 
 import java.io.Serializable
 
-data class Resolution(val width: Int, val height: Int) : Serializable {
+data class Resolution(var width: Int = 0, var height: Int = 0) : Serializable {
     override fun toString(): String {
         return "$width x $height"
     }
@@ -15,28 +15,9 @@ data class Resolution(val width: Int, val height: Int) : Serializable {
         const val CUSTOM = "custom"
     }
 
-    fun calculateResolution(size: String): Resolution {
-        return when (size) {
-            SMALL -> this.copy(
-                width = width - (width * 1 / 2),
-                height = height - (height * 1 / 2)
-            )
+    fun getRatio() = width * 1.0f / height
 
-            MEDIUM -> this.copy(
-                width = width - (width * 1 / 3),
-                height = height - (height * 1 / 3)
-            )
 
-            LARGE -> this.copy(
-                width = width - (width * 1 / 4),
-                height = height - (height * 1 / 4)
-            )
-
-            ORIGIN -> this
-
-            else -> Resolution(-1, -1)
-        }
-    }
 }
 
 data class MediaInfo(
@@ -47,9 +28,8 @@ data class MediaInfo(
     val resolution: Resolution? = null,
     var time: String,
     var mime: String,
-    var isSelected: Boolean
-) : Serializable {
-
-}
+    var bitrate: Float,
+    var isSelected: Boolean = false
+) : Serializable
 
 class MediaInfos : ArrayList<MediaInfo>() {}

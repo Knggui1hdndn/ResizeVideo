@@ -4,11 +4,13 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LiveData
 
-class RequestPermission(private val context: FragmentActivity) : LiveData<Boolean>() {
+class RequestPermission(context: FragmentActivity) : LiveData<Boolean>() {
+
     private val rqPermission =
         context.registerForActivityResult(ActivityResultContracts.RequestPermission()) {
             postValue(it)
         }
+
     private val rqPermissions =
         context.registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { it ->
             postValue(it.all { it.value })

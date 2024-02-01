@@ -8,12 +8,15 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
-import com.knd.duantotnghiep.testsocket.core.BaseActivity
+import com.tearas.resizevideo.core.BaseActivity
 import com.tearas.resizevideo.R
 import com.tearas.resizevideo.databinding.ActivityMainPickerBinding
+import com.tearas.resizevideo.ffmpeg.MediaAction
 import com.tearas.resizevideo.model.OptionMedia
+import com.tearas.resizevideo.ui.cut_trim.CutTrimActivity
+import com.tearas.resizevideo.ui.extract_audio.ExtractAudioActivity
+import com.tearas.resizevideo.ui.fast_forward.FastForwardActivity
 import com.tearas.resizevideo.ui.select_compress.SelectCompressActivity
-import com.tearas.resizevideo.utils.IntentUtils
 import com.tearas.resizevideo.utils.IntentUtils.getActionMedia
 import com.tearas.resizevideo.utils.IntentUtils.passOptionMedia
 
@@ -39,12 +42,19 @@ class MainPickerActivity : BaseActivity<ActivityMainPickerBinding>() {
 
             close.setOnClickListener {
                 layoutSelected.visibility = View.GONE
-                viewModel.videos.clear()
+                viewModel.closeLiveData.postValue(true)
             }
 
             layoutSelected.setOnClickListener {
                 if (viewModel.size() > 0) {
-                    val intent = Intent(this@MainPickerActivity, SelectCompressActivity::class.java)
+                    val destination = when (intent.getActionMedia()!!) {
+                        is MediaAction.CompressVideo -> SelectCompressActivity::class.java
+                        is MediaAction.CutOrTrim -> CutTrimActivity::class.java
+                        is MediaAction.ExtractAudio -> ExtractAudioActivity::class.java
+                        is MediaAction.FastForward -> FastForwardActivity::class.java
+                        else -> SelectCompressActivity::class.java
+                    }
+                    val intent = Intent(this@MainPickerActivity, destination)
                     intent.passOptionMedia(createOptionMedia())
                     startActivity(intent)
                 }
@@ -55,10 +65,8 @@ class MainPickerActivity : BaseActivity<ActivityMainPickerBinding>() {
 
     private fun createOptionMedia(): OptionMedia {
         return OptionMedia(
-            viewModel.videos,
-            null, null,
-            if (viewModel.size() == 1) viewModel.videos[0].resolution!! else null,
-            intent.getActionMedia()!!
+            data = viewModel.videos,
+            mediaAction = intent.getActionMedia()!!,
         )
     }
 

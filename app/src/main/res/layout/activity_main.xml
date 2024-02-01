@@ -26,7 +26,7 @@
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="5dp">
 
@@ -171,8 +171,12 @@
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.appcompat.widget.LinearLayoutCompat>
-    </androidx.appcompat.widget.LinearLayoutCompat>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/container"/>
 
+    </androidx.appcompat.widget.LinearLayoutCompat>
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigation_view"
         android:layout_width="wrap_content"
@@ -181,5 +185,6 @@
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/header"
         app:menu="@menu/menu_draw" />
+
 
 </androidx.drawerlayout.widget.DrawerLayout>

@@ -4,9 +4,11 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewbinding.ViewBinding
+import com.tearas.resizevideo.ui.select_compress.ChoseResolutionDialogFragment
 
 abstract class BaseDialogFragment<VB : ViewBinding>(private val layout: Int) :
     DialogFragment(layout) {
@@ -15,12 +17,12 @@ abstract class BaseDialogFragment<VB : ViewBinding>(private val layout: Int) :
     private lateinit var activity:FragmentActivity
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         dialog!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog!!.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
         activity=requireActivity()
         _binding = getViewBinding(view)
         super.onViewCreated(view, savedInstanceState)
         initView()
     }
-
 
 
 

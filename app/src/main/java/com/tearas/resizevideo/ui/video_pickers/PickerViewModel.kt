@@ -8,6 +8,7 @@ import com.tearas.resizevideo.model.MediaInfos
 
 class PickerViewModel : ViewModel() {
     val videosLiveData = MutableLiveData<MediaInfo>()
+    val closeLiveData = MutableLiveData<Boolean>()
     val videos = MediaInfos()
     var sumSizeVideos = 0L
     fun size() = videos.size

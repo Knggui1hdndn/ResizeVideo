@@ -16,6 +16,7 @@ import com.tearas.resizevideo.databinding.FragmentVideoFolderBinding
 import com.tearas.resizevideo.model.FolderInfo
 import com.tearas.resizevideo.model.MediaInfo
 import com.tearas.resizevideo.utils.HandleMediaVideo
+import com.tearas.resizevideo.utils.IntentUtils.getActionMedia
 import com.tearas.resizevideo.utils.MyMenu.showPopUpMenuSort
 
 class VideoFolderFragment :
@@ -39,12 +40,18 @@ class VideoFolderFragment :
         folderInfo = args.FolderInfo
         videos = viewModel.videos
         handlerVideo = HandleMediaVideo(requireActivity())
-        adapter = VideoAdapter(requireActivity(), object : IOnItemClickListener {
-            @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
-            override fun onItemClick(mediaInfo: MediaInfo) {
-                viewModel.insertVideo(mediaInfo)
-            }
-        })
+        adapter = VideoAdapter(requireActivity(),
+            requireActivity().intent.getActionMedia()!!,
+            (requireActivity() as MainPickerActivity).proApplication.isSubVip,
+            object : IOnItemClickListener {
+                override fun onItemClick(mediaInfo: MediaInfo) {
+                    viewModel.insertVideo(mediaInfo)
+                }
+
+                override fun showNotification(isPremium: Boolean, message: String) {
+
+                }
+            })
     }
 
     override fun initView() {

@@ -6,17 +6,13 @@ import android.os.Build
 import android.os.Environment
 import android.os.storage.StorageManager
 import android.provider.MediaStore.Video.Media
-import android.util.Log
 import com.tearas.resizevideo.model.FolderInfo
 import com.tearas.resizevideo.model.Resolution
 import com.tearas.resizevideo.model.MediaInfo
-import com.tearas.resizevideo.utils.Utils.formatTime
 import java.io.File
-import java.text.SimpleDateFormat
-import java.util.TimeZone
 
 interface IVideo {
-    fun createFolderVideo(): String
+
     fun getPathStorageExternal(): String
     fun getVideoByIdBucket(
         id: String, orderBy: String = Media.DATE_ADDED + " DESC"
@@ -35,35 +31,47 @@ interface IVideo {
     fun getFolderContainVideo(orderBy: String = Media.DATE_ADDED + " DESC"): ArrayList<FolderInfo>
     fun countVideoInFolder(id: String): Int
     fun compareQuantity(quantity: Int): Boolean
-    fun getPathFolderMyApp(): String
+    fun getPathFolderVideoMyApp(): String
+    fun createFolderVideo(): String
+    fun createFolderAudio(): String
+    fun getPathFolderAudioMyApp(): String
+    fun createFolder(nameFolder: String, isVideo: Boolean): String
 }
 
 class HandleMediaVideo(private val context: Context) : IVideo {
 
-    override fun getPathFolderMyApp(): String {
+    override fun getPathFolderVideoMyApp(): String {
         return createFolderVideo()
     }
 
+    override fun getPathFolderAudioMyApp(): String {
+        return createFolderAudio()
+    }
+
+    override fun createFolderAudio(): String {
+        return createFolder("TerasResizeAudio", false)
+    }
+
     override fun createFolderVideo(): String {
-        val path = getPathStorageExternal()
-        val folderName = "TerasResizeVideo"
-        val folder = File(path, folderName)
+        return createFolder("TerasResizeVideo", true)
+    }
+
+    override fun createFolder(nameFolder: String, isVideo: Boolean): String {
+        val path = getPathStorageExternal() + if (isVideo) "/Movies" else "/Music"
+        val folder = File(path, nameFolder)
         return if (folder.exists() || folder.mkdirs()) {
             folder.path
         } else {
-            throw IllegalStateException("Unable to create directory $folderName")
+            throw IllegalStateException("Unable to create directory $nameFolder")
         }
     }
-
 
     override fun getPathStorageExternal(): String {
         val storeMediaMng = context.getSystemService(Context.STORAGE_SERVICE) as StorageManager
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            Log.d("khangnfuyen ksaj", "createFolderVideo"+storeMediaMng.storageVolumes[0].directory!!.path)
-            storeMediaMng.storageVolumes[0].directory!!.path+"/Movies"
+            storeMediaMng.storageVolumes[0].directory!!.path
         } else {
-            Log.d("khangnfuyen ksaj", "createFolderVideo"+Environment.getExternalStorageDirectory().path)
-            Environment.getExternalStorageDirectory().path+"/Movies"
+            Environment.getExternalStorageDirectory().path
         }
     }
 
@@ -93,7 +101,8 @@ class HandleMediaVideo(private val context: Context) : IVideo {
             Media.WIDTH,
             Media.HEIGHT,
             Media.DURATION,
-            Media.MIME_TYPE
+            Media.MIME_TYPE,
+            Media.BITRATE
         )
 
         val cursor = contentResolver.query(
@@ -107,7 +116,7 @@ class HandleMediaVideo(private val context: Context) : IVideo {
                         getInt(getColumnIndex(Media.HEIGHT)),
                     )
 
-                    val formatTime = getLong(getColumnIndex(Media.DURATION)).formatTime()
+                    val formatTime = Utils.formatTime(getLong(getColumnIndex(Media.DURATION)))
 
                     val mediaInfo = MediaInfo(
                         getLong(getColumnIndex(Media._ID)),
@@ -117,9 +126,12 @@ class HandleMediaVideo(private val context: Context) : IVideo {
                         resolution,
                         formatTime,
                         getString(getColumnIndex(Media.MIME_TYPE)).split("/")[1],
+                        getFloat(getColumnIndex(Media.BITRATE)),
                         false
                     )
-                    videos.add(mediaInfo)
+                    if (formatTime != "00:00:00") {
+                        videos.add(mediaInfo)
+                    }
                 }
             }
         }

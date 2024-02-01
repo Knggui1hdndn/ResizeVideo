@@ -45,8 +45,7 @@ class FolderPickerFragment :
 
             rcyFolder.adapter = folderAdapter
             folderAdapter.setOnClickListener {
-                val videoFolder =
-                    MainPickerFragmentDirections.actionMainPickerFragmentToPickerFragment(it)
+                val videoFolder = MainPickerFragmentDirections.actionMainPickerFragmentToPickerFragment(it)
                 findNavController().navigate(videoFolder)
             }
         }

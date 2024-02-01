@@ -4,11 +4,15 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
 import android.os.Build
+import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.GravityCompat
+import com.access.pro.callBack.OnShowAdsOpenListener
+import com.access.pro.callBack.OnShowInterstitialListener
+import com.arthenica.mobileffmpeg.FFmpeg
 
-import com.knd.duantotnghiep.testsocket.core.BaseActivity
+import com.tearas.resizevideo.core.BaseActivity
 import com.tearas.resizevideo.databinding.ActivityMainBinding
 import com.tearas.resizevideo.ffmpeg.MediaAction
 import com.tearas.resizevideo.ui.video_pickers.MainPickerActivity
@@ -26,19 +30,22 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     override fun getViewBinding(): ActivityMainBinding {
         return ActivityMainBinding.inflate(layoutInflater)
     }
-private lateinit var mediaAction: MediaAction
+
+    private lateinit var mediaAction: MediaAction
     override fun initView() {
         binding.apply {
-            setToolbar(
-                toolbar,
-                null,
-                AppCompatResources.getDrawable(this@MainActivity, R.drawable.list)!!
-                    .apply {
-                        setTint(Color.WHITE)
-                    },
-                true
-            )
+            val draw = AppCompatResources.getDrawable(this@MainActivity, R.drawable.list)!!
+                .apply {
+                    setTint(Color.WHITE)
+                }
 
+            setToolbar(toolbar, null, draw, true)
+            showNativeAds(binding.container) {}
+            showInterstitial(true) {}
+            proApplication.showOpenAds(this@MainActivity, object : OnShowAdsOpenListener {
+                override fun onShowAdComplete() {
+                 }
+            })
             navigationView.setCheckedItem(R.id.home)
             navigationView.setNavigationItemSelectedListener { menuItem ->
                 if (menuItem.isChecked) menuItem.setChecked(false);
@@ -52,7 +59,7 @@ private lateinit var mediaAction: MediaAction
             }
 
             cutCompress.setOnClickListener {
-                startPickerVideo(MediaAction.CutCompress)
+                startPickerVideo(MediaAction.CutOrTrim)
             }
 
             fastForward.setOnClickListener {
@@ -95,7 +102,7 @@ private lateinit var mediaAction: MediaAction
 
     @SuppressLint("ResourceType")
     private fun startPickerVideo(mediaAction: MediaAction) {
-        this.mediaAction=mediaAction
+        this.mediaAction = mediaAction
         val checkPermission = requestPermissionMedia()
         if (checkPermission) {
             val intent = Intent(this, MainPickerActivity::class.java)
@@ -106,7 +113,6 @@ private lateinit var mediaAction: MediaAction
             requestPermission.launch(permission)
         }
     }
-
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == android.R.id.home) {

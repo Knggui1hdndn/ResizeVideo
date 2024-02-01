@@ -2,6 +2,7 @@ package com.tearas.resizevideo.ui.video_pickers
 
 import android.os.Build
 import android.provider.MediaStore
+import android.util.Log
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModelProvider
@@ -10,6 +11,7 @@ import com.tearas.resizevideo.core.BaseFragment
 import com.tearas.resizevideo.databinding.FragmentVideoPickerBinding
 import com.tearas.resizevideo.model.MediaInfo
 import com.tearas.resizevideo.utils.HandleMediaVideo
+import com.tearas.resizevideo.utils.IntentUtils.getActionMedia
 import com.tearas.resizevideo.utils.MyMenu.showPopUpMenuSort
 
 class VideoPickerFragment :
@@ -29,21 +31,39 @@ class VideoPickerFragment :
 
     override fun initData() {
         handlerVideo = HandleMediaVideo(requireActivity())
-        adapter = VideoAdapter(requireActivity(), object : IOnItemClickListener {
-            @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
-            override fun onItemClick(mediaInfo: MediaInfo) {
-                viewModel.insertVideo(mediaInfo)
-            }
-        })
+        adapter = VideoAdapter(requireActivity(),
+            requireActivity().intent.getActionMedia()!!,
+            (requireActivity() as MainPickerActivity).proApplication.isSubVip,
+            object : IOnItemClickListener {
+                override fun onItemClick(mediaInfo: MediaInfo) {
+                    viewModel.insertVideo(mediaInfo)
+                }
+
+                override fun showNotification(isPremium: Boolean, message: String) {
+
+                }
+            })
     }
 
     override fun initObserver() {
+        viewModel.closeLiveData.observe(this) { shouldClear ->
+            viewModel.videos.forEach { mediaInfo ->
+                val index = adapter.submitData.indexOfLast { it.id == mediaInfo.id }
+                index.takeIf { it != -1 }?.let { idx ->
+                    adapter.notifyItemChanged(
+                        idx,
+                        adapter.submitData[index].apply { isSelected = false })
+                }
+            }
+            viewModel.videos.clear()
+        }
+
         viewModel.videosLiveData.observe(this) { info ->
             val index = adapter.submitData.indexOfLast { it.id == info.id }
             index.takeIf { it != -1 }?.let { idx ->
-                adapter.notifyItemChanged(idx, adapter.submitData[index]
-                    .apply { isSelected = info.isSelected }
-                )
+                adapter.notifyItemChanged(
+                    idx,
+                    adapter.submitData[index].apply { isSelected = info.isSelected })
             }
         }
     }
