@@ -11,6 +11,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import com.tearas.resizevideo.core.BaseActivity
 import com.tearas.resizevideo.R
 import com.tearas.resizevideo.databinding.ActivityMainPickerBinding
+import com.tearas.resizevideo.ffmpeg.CommandConfiguration
 import com.tearas.resizevideo.ffmpeg.MediaAction
 import com.tearas.resizevideo.model.OptionMedia
 import com.tearas.resizevideo.ui.cut_trim.CutTrimActivity
@@ -34,12 +35,14 @@ class MainPickerActivity : BaseActivity<ActivityMainPickerBinding>() {
     override fun initData() {
         hostNav =
             supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
+
     }
+
 
     override fun initView() {
         setUpNavigation()
         binding.apply {
-
+            showBannerAds(bannerAds)
             close.setOnClickListener {
                 layoutSelected.visibility = View.GONE
                 viewModel.closeLiveData.postValue(true)
@@ -65,7 +68,7 @@ class MainPickerActivity : BaseActivity<ActivityMainPickerBinding>() {
 
     private fun createOptionMedia(): OptionMedia {
         return OptionMedia(
-            data = viewModel.videos,
+            dataOriginal = viewModel.videos,
             mediaAction = intent.getActionMedia()!!,
         )
     }

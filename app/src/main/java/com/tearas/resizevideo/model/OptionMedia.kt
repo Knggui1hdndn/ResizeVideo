@@ -1,12 +1,15 @@
 package com.tearas.resizevideo.model
 
-import android.hardware.camera2.CameraConstrainedHighSpeedCaptureSession
+import android.health.connect.datatypes.DataOrigin
 import com.tearas.resizevideo.ffmpeg.MediaAction
 import java.io.Serializable
 
 data class OptionMedia(
-    val data: MediaInfos,
-    val size: String? = null,
+    val dataOriginal: MediaInfos,
+    var optionCompress: OptionCompress? = null,
+    var bitrate: Long = 0,
+    var frameRate: Int = 0,
+    val fileSize: Long = 0,//Kbps
     val mimetype: String? = null,
     val mediaAction: MediaAction,
     val newResolution: Resolution = Resolution(),
@@ -14,7 +17,7 @@ data class OptionMedia(
     var endTime: Long = 0,
     var speed: Float = 1.0f,
     var withAudio: Boolean = true,
-    val isPickMultiple: Boolean = data.size > 0,
+    val isPickMultiple: Boolean = dataOriginal.size > 0,
 ) : Serializable {
     override fun toString(): String {
         return super.toString()

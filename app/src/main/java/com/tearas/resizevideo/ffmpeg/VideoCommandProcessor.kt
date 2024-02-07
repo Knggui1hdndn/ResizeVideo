@@ -1,25 +1,111 @@
 package com.tearas.resizevideo.ffmpeg
 
+import android.content.Context
+import android.util.Log
+import com.arthenica.ffmpegkit.FFprobeKit
+import com.tearas.resizevideo.model.MediaInfo
+
 import com.tearas.resizevideo.model.OptionMedia
+import com.tearas.resizevideo.model.OptionCompress
 import com.tearas.resizevideo.model.Resolution
 import com.tearas.resizevideo.utils.ResolutionUtils.calculateResolution
 import com.tearas.resizevideo.utils.ResolutionUtils.calculateResolutionByRadio
 import com.tearas.resizevideo.utils.Utils
 
 class VideoCommandProcessor(
+    private val context: Context,
     private val pathOutputFolderVideo: String,
     private val pathOutputFolderAudio: String
 ) {
-
-    fun compressVideoCommand(resolution: Resolution, inputPath: String): String {
+    private fun compressByFileSize(inputPath: String, targetBit: Long): String {
+        val logFilePath = "${context.cacheDir}/ffmpeg2pass"
         return CommandConfiguration.getInstance()
-            .appendCommand("-i $inputPath")
-            .appendCommand("-s ${resolution.width}x${resolution.height}")
-            .appendCommand("$pathOutputFolderVideo /VDI_TERAS_${System.currentTimeMillis()}.mp4")
+            .appendCommand("-y")
+            .appendCommand("-i")
+            .appendCommand(inputPath)
+//            .appendCommand("-c:v libx264")
+            .appendCommand("-r 60")
+            .appendCommand("-passlogfile")
+            .appendCommand(logFilePath)
+            .appendCommand("-preset medium")
+            .appendCommand("-b:v $targetBit")
+            .appendCommand("-b:a 127k")
+            .appendCommand("-pass 1")
+            .appendCommand("-c:a aac")
+            .appendCommand("-b:a 128k")
+            .appendCommand("-f mp4")
+            .appendCommand("/dev/null")
+            .appendCommand("-y -i")
+            .appendCommand(inputPath)
+//            .appendCommand("-c:v libx264")
+            .appendCommand("-r 60")
+            .appendCommand("-passlogfile")
+            .appendCommand(logFilePath)
+            .appendCommand("-preset medium")
+            .appendCommand("-b:v  $targetBit")
+            .appendCommand("-pass 2")
+            .appendCommand("-c:a aac")
+            .appendCommand("-b:a 127k")
+            .appendCommand(getPathOutPut())
             .getCommand()
     }
 
-    fun trimVideoCommand(
+    private fun compressVideoCommand(
+        resolution: Resolution,
+        inputPath: String,
+        option: OptionCompress,
+        fileSizeCompress: Long?,
+        frameRate: Int,
+        bitrate: Long
+    ): String {
+        return when (option) {
+            is OptionCompress.CustomFileSize -> {
+                val originalDuration =
+                    FFprobeKit.getMediaInformation(inputPath).mediaInformation.duration.toFloat()
+                        .toLong()
+                val targetBitrate = (fileSizeCompress!! / originalDuration) - 128000
+                val x = compressByFileSize(inputPath, targetBitrate)
+                 x
+            }
+
+            is OptionCompress.Origin -> {
+                CommandConfiguration.getInstance()
+                    .appendCommand("-i $inputPath")
+                    .appendCommand("-preset medium")
+                    .appendCommand(getPathOutPut())
+                    .getCommand()
+            }
+
+            is OptionCompress.AdvanceOption -> {
+                CommandConfiguration.getInstance()
+                    .appendCommand("-i $inputPath")
+                    .appendCommand("-s ${resolution.width}x${resolution.height}")
+                    .appendCommand("-r $frameRate")
+                    .appendCommand("-b:v ${bitrate}k")
+                    .appendCommand("-preset medium")
+                    .appendCommand(getPathOutPut())
+                    .getCommand()
+            }
+
+            else -> {
+                CommandConfiguration.getInstance()
+                    .appendCommand("-i $inputPath")
+                    .appendCommand("-s ${resolution.width}x${resolution.height}")
+                    .appendCommand(getPathOutPut())
+                    .getCommand()
+            }
+        }
+    }
+
+
+    private fun getPathOutPut(mime: String = "mp4", isVideo: Boolean = true) = if (isVideo) {
+        "$pathOutputFolderVideo/VDI_TERAS_${System.currentTimeMillis()}${(Math.random() * 1000).toInt()}.$mime"
+    } else {
+        "$pathOutputFolderAudio/AUDIO_TERAS_${System.currentTimeMillis()}${(Math.random() * 1000).toInt()}.$mime"
+    }
+
+
+    private fun trimVideoCommand(
         resolution: Resolution,
         inputPath: String,
         startTime: Long,
@@ -31,12 +117,12 @@ class VideoCommandProcessor(
             .appendCommand("-ss ${Utils.formatTime(startTime * 1000)}")
             .appendCommand("-t ${Utils.formatTime((endTime - startTime) * 1000)}")
             .appendCommand("-c copy")
-            .appendCommand("$pathOutputFolderVideo /VDI_TERAS_${System.currentTimeMillis()}.mp4")
+            .appendCommand(getPathOutPut())
             .getCommand()
 
     }
 
-    fun cutVideoCommand(
+    private fun cutVideoCommand(
         resolution: Resolution,
         inputPath: String,
         startTime: Long,
@@ -47,29 +133,28 @@ class VideoCommandProcessor(
             .appendCommand("-s ${resolution.width}x${resolution.height}")
             .appendCommand("-vf  \"select='not(between(t,$startTime,$endTime))',  setpts=N/FRAME_RATE/TB\"")
             .appendCommand(" -af \"aselect='not(between(t,$startTime,$endTime))', asetpts=N/SR/TB\"")
-            .appendCommand("$pathOutputFolderVideo/VDI_TERAS_${System.currentTimeMillis()}.mp4")
+            .appendCommand(getPathOutPut())
             .getCommand();
-
-
     }
 
-    fun extractAudioCommand(mime: String, inputPath: String): String {
+    private fun extractAudioCommand(mime: String, inputPath: String): String {
 
         return CommandConfiguration.getInstance()
             .appendCommand("-i $inputPath")
             .appendCommand("-vn")
-            .appendCommand("$pathOutputFolderAudio/VDI_TERAS_${System.currentTimeMillis()}.$mime")
+            .appendCommand(getPathOutPut(mime, false))
             .getCommand()
     }
 
     //mp3 flac ogg
-    fun fastForwardCommand(
+    private fun fastForwardCommand(
         resolution: Resolution,
         withAudio: Boolean,
         speed: Float,
         inputPath: String
     ): String {
         val commandProcessor = CommandConfiguration.getInstance()
+        if (resolution.height % 2 != 0) resolution.height = resolution.height + 1
         commandProcessor
             .appendCommand("-i $inputPath")
             .appendCommand("-s ${resolution.width}x${resolution.height}")
@@ -81,33 +166,26 @@ class VideoCommandProcessor(
             commandProcessor.appendCommand("[0:v]setpts=${1.0 / speed}*PTS[v]")
                 .appendCommand("-map [v]")
         }
-            .appendCommand(if (withAudio) "" else "")
-            .appendCommand("$pathOutputFolderVideo/VDI_TERAS_${System.currentTimeMillis()}.mp4")
+             .appendCommand(getPathOutPut())
         return commandProcessor.getCommand()
 
     }
 
     fun createCommandList(optionMedia: OptionMedia): List<String> {
-        var resolution = Resolution()
-        return optionMedia.data.map { mediaItem ->
-            if (optionMedia.mediaAction is MediaAction.CompressVideo ||
-                optionMedia.mediaAction is MediaAction.CutOrTrim.CutVideo ||
-                optionMedia.mediaAction is MediaAction.CutOrTrim.TrimVideo ||
-                optionMedia.mediaAction is MediaAction.FastForward
-
-            ) {
-                val originalResolution = mediaItem.resolution!!
-                resolution = if (optionMedia.size == Resolution.CUSTOM) {
-                    originalResolution.calculateResolutionByRadio(
-                        originalResolution.getRatio(), optionMedia.newResolution.width, null
-                    )
-                } else {
-                    originalResolution.calculateResolution(optionMedia.size!!)
-                }
-            }
+        var resolution: Resolution
+        return optionMedia.dataOriginal.map { mediaItem ->
+            resolution = calculateResolutionForCompressVideo(mediaItem, optionMedia)
 
             when (optionMedia.mediaAction) {
-                is MediaAction.CompressVideo -> compressVideoCommand(resolution, mediaItem.path)
+                is MediaAction.CompressVideo -> compressVideoCommand(
+                    resolution,
+                    mediaItem.path,
+                    optionMedia.optionCompress!!,
+                    optionMedia.fileSize,
+                    optionMedia.frameRate,
+                    optionMedia.bitrate
+                )
+
                 is MediaAction.CutOrTrim.CutVideo -> {
                     cutVideoCommand(
                         resolution,
@@ -136,9 +214,41 @@ class VideoCommandProcessor(
                     mediaItem.path
                 )
 
-                else -> ""
+                else -> {
+                    ""
+                }
             }
         }
     }
+
+    private fun calculateResolutionForCompressVideo(
+        mediaItem: MediaInfo,
+        optionMedia: OptionMedia
+    ): Resolution {
+        // Khởi tạo giá trị resolution ban đầu
+        var resolution = Resolution()
+
+        // Kiểm tra điều kiện và tính toán resolution mới dựa trên action và option
+        if ((optionMedia.mediaAction is MediaAction.CompressVideo &&
+                    optionMedia.optionCompress != OptionCompress.CustomFileSize) ||
+            optionMedia.mediaAction is MediaAction.CutOrTrim.CutVideo ||
+            optionMedia.mediaAction is MediaAction.CutOrTrim.TrimVideo ||
+            optionMedia.mediaAction is MediaAction.FastForward
+
+        ) {
+            val originalResolution = mediaItem.resolution!!
+            resolution = if (
+                optionMedia.optionCompress == OptionCompress.Custom
+            ) {
+                originalResolution.calculateResolutionByRadio(
+                    originalResolution.getRatio(), optionMedia.newResolution.width, null
+                )
+            } else {
+                originalResolution.calculateResolution(optionMedia.optionCompress!!)
+            }
+        }
+        return resolution
+    }
+
 }
 

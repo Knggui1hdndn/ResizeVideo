@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:paddingTop="15dp"
+    style="@style/BackgroundScreen"
     android:paddingStart="15dp"
     android:paddingRight="15dp"
     android:layout_height="match_parent">
@@ -14,7 +15,6 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="17"
-        android:textColor="@color/black"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -25,7 +25,6 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text=" Folder"
-        android:textColor="@color/black"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/count"
         app:layout_constraintTop_toTopOf="parent" />
@@ -49,6 +48,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/sortBy"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/sortBy" />
+
     <View
         android:id="@+id/view"
         android:layout_width="wrap_content"

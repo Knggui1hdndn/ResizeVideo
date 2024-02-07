@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModelProvider
+import com.arthenica.ffmpegkit.FFprobeKit
 import com.tearas.resizevideo.R
 import com.tearas.resizevideo.core.BaseFragment
 import com.tearas.resizevideo.databinding.FragmentVideoPickerBinding
@@ -37,6 +38,7 @@ class VideoPickerFragment :
             object : IOnItemClickListener {
                 override fun onItemClick(mediaInfo: MediaInfo) {
                     viewModel.insertVideo(mediaInfo)
+
                 }
 
                 override fun showNotification(isPremium: Boolean, message: String) {

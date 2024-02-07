@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/share"
+        android:icon="@drawable/share"
+        android:iconTint="@color/white"
+        android:title="Share" />
+    <item
+        android:id="@+id/replace"
+        android:icon="@drawable/baseline_file_copy_24"
+        android:title="Replace" />
+    <item
+        android:id="@+id/save"
+        android:icon="@drawable/diskette"
+        android:iconTint="@color/white"
+        android:title="Save" />
+</menu>

@@ -23,6 +23,8 @@
         app:rsb_indicator_radius="2dp"
         app:rsb_indicator_show_mode="alwaysShow"
         app:rsb_mode="range"
+
+        app:rsb_progress_color="@android:color/transparent"
         app:rsb_progress_default_color="@android:color/transparent"
         app:rsb_progress_height="4dp"
         app:rsb_thumb_width="0dp" />
@@ -30,9 +32,12 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="-20dp">
+        android:layout_marginTop="-20dp"
+        app:cardElevation="0dp"
+        app:cardBackgroundColor="@android:color/transparent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/mCutTrim"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -40,9 +45,9 @@
                 android:id="@+id/rangeBottom"
                 android:layout_width="0dp"
                 android:layout_height="5dp"
-                android:layout_marginStart="2dp"
-                android:layout_marginEnd="2dp"
+
                 android:layout_marginBottom="2dp"
+                android:background="@android:color/transparent"
                 app:layout_constraintBottom_toBottomOf="@+id/rangeProgress"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -59,14 +64,14 @@
                 android:id="@+id/rangeTop"
                 android:layout_width="0dp"
                 android:layout_height="5dp"
-                android:layout_marginStart="2dp"
-                android:layout_marginTop="2dp"
-                android:layout_marginEnd="2dp"
+                 android:layout_marginTop="2.2dp"
+                 android:background="@android:color/transparent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:rsb_gravity="center"
                 app:rsb_mode="range"
+                app:rsb_progress_color="@android:color/transparent"
                 app:rsb_progress_default_color="@color/maintream"
                 app:rsb_progress_height="4dp"
                 app:rsb_progress_radius="1dp"

@@ -52,7 +52,7 @@ class VideoAdapter(
 
             Glide.with(context)
                 .load("file:///" + item.path)
-                .error(context.getDrawable(R.drawable.img) )
+                .error(context.getDrawable(R.drawable.img))
                 .into(binding.thumbnail);
 
             mItem.setOnClickListener {
@@ -73,9 +73,8 @@ class VideoAdapter(
     }
 
     private fun applyItemSelectionStyle(item: MediaInfo, name: TextView, overlay: View) {
-        name.setTextColor(
-            if (item.isSelected) context.getColor(R.color.maintream)
-            else context.getColor(R.color.black)
+        if (item.isSelected) name.setTextColor(context.getColor(R.color.maintream)) else name.setTextAppearance(
+            R.style.Theme_ResizeVideo
         )
         overlay.visibility = if (item.isSelected) View.VISIBLE else View.GONE
     }

@@ -10,6 +10,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.MediaController
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatDelegate
 import com.tearas.resizevideo.R
 import com.tearas.resizevideo.core.BaseActivity
 import com.tearas.resizevideo.databinding.ActivityFastForwardBinding
@@ -17,6 +18,7 @@ import com.tearas.resizevideo.model.OptionMedia
 import com.tearas.resizevideo.ui.select_compress.SelectCompressActivity
 import com.tearas.resizevideo.utils.IntentUtils.getOptionMedia
 import com.tearas.resizevideo.utils.IntentUtils.passOptionMedia
+import com.tearas.resizevideo.utils.Utils.isDarkMode
 import java.util.logging.Handler
 import kotlin.properties.Delegates
 
@@ -50,6 +52,7 @@ class FastForwardActivity : BaseActivity<ActivityFastForwardBinding>() {
             binding.txt3x,
             binding.customSpeed
         )
+        setBackground(binding.txt1x.id)
         binding.apply {
             setToolbar(
                 binding.toolbar, "Fast Forward", getDrawable(R.drawable.baseline_arrow_back_24)!!
@@ -95,12 +98,12 @@ class FastForwardActivity : BaseActivity<ActivityFastForwardBinding>() {
 
     private fun setSpeed(it: Float) {
         mediaPlayer.playbackParams = mediaPlayer.playbackParams.setSpeed(it)
-        speed =it
+        speed = it
     }
 
     private fun setUpVideo() {
         binding.apply {
-            val path = intent.getOptionMedia()!!.data[0].path
+            val path = intent.getOptionMedia()!!.dataOriginal[0].path
             videoView.setOnPreparedListener {
                 mediaPlayer = it
             }
@@ -130,22 +133,27 @@ class FastForwardActivity : BaseActivity<ActivityFastForwardBinding>() {
         return super.onOptionsItemSelected(item)
     }
 
+
+
+
     @SuppressLint("UseCompatLoadingForDrawables")
     private fun setBackground(idChecked: Int) {
         options.forEach {
-            if (it.id == idChecked) {
-                it.background = getDrawable(R.drawable.radio_speed_checked)
-                it.setTextColor(getColor(R.color.maintream))
-            } else {
-                it.background = getDrawable(R.drawable.radio_speed_unchecked)
-                it.setTextColor(ColorStateList.valueOf(Color.GRAY))
-            }
+            it.setTextAppearance(R.style.StyleSpeed)
+            it.background =
+                if (it.id == idChecked) {
+                    it.setTextColor(getColor(R.color.maintream))
+                    getDrawable(if (isDarkMode()) R.drawable.radio_speed_checked_dark else R.drawable.radio_speed_checked)
+                } else {
+                    getDrawable(if (isDarkMode()) R.drawable.radio_speed_unchecked_dark else R.drawable.radio_speed_unchecked)
+                }
         }
     }
 
+
     private fun createOptionMedia(): OptionMedia {
         return intent.getOptionMedia()!!.copy(
-            speed =this.speed
+            speed = this.speed
         )
     }
 }

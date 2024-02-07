@@ -27,10 +27,8 @@ class VideoCompressAdapter(private val context: Context) : BaseAdapter<ItemVideo
            time.text=item.time
            resolution.text=item.resolution.toString()
            Glide.with(context)
-
                .load("file:///" + item.path)
-               .error(context.getDrawable(R.drawable.info)!!.setTint(Color.GRAY))
-
+               .error(context.getDrawable(R.drawable.img)!!.setTint(Color.GRAY))
                .into(binding.thumbnail);
        }
     }

@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    style="@style/BackgroundScreen"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.fast_forward.FastForwardActivity">
@@ -80,13 +81,12 @@
 
             <TextView
                 android:id="@+id/txt1x"
+                style="@style/StyleSpeed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/radio_speed_unchecked"
                 android:foreground="?attr/selectableItemBackground"
                 android:gravity="center"
                 android:text="1x"
-                android:textColor="@color/gray"
                 android:textStyle="bold" />
         </androidx.cardview.widget.CardView>
 
@@ -100,13 +100,13 @@
 
             <TextView
                 android:id="@+id/txt1_25x"
+                style="@style/StyleSpeed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/radio_speed_unchecked"
+
                 android:foreground="?attr/selectableItemBackground"
                 android:gravity="center"
                 android:text="1.25x"
-                android:textColor="@color/gray"
                 android:textStyle="bold" />
         </androidx.cardview.widget.CardView>
 
@@ -120,13 +120,13 @@
 
             <TextView
                 android:id="@+id/txt1_5x"
+                style="@style/StyleSpeed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/radio_speed_unchecked"
+
                 android:foreground="?attr/selectableItemBackground"
                 android:gravity="center"
                 android:text="1.5x"
-                android:textColor="@color/gray"
                 android:textStyle="bold" />
         </androidx.cardview.widget.CardView>
 
@@ -140,13 +140,13 @@
 
             <TextView
                 android:id="@+id/txt2x"
+                style="@style/StyleSpeed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/radio_speed_unchecked"
+
                 android:foreground="?attr/selectableItemBackground"
                 android:gravity="center"
                 android:text="2x"
-                android:textColor="@color/gray"
                 android:textStyle="bold" />
         </androidx.cardview.widget.CardView>
 
@@ -159,13 +159,13 @@
 
             <TextView
                 android:id="@+id/txt2_5x"
+                style="@style/StyleSpeed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/radio_speed_unchecked"
+
                 android:foreground="?attr/selectableItemBackground"
                 android:gravity="center"
                 android:text="2.5x"
-                android:textColor="@color/gray"
                 android:textStyle="bold" />
         </androidx.cardview.widget.CardView>
 
@@ -178,13 +178,13 @@
 
             <TextView
                 android:id="@+id/txt3x"
+                style="@style/StyleSpeed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/radio_speed_unchecked"
+
                 android:foreground="?attr/selectableItemBackground"
                 android:gravity="center"
                 android:text="3x"
-                android:textColor="@color/gray"
                 android:textStyle="bold" />
         </androidx.cardview.widget.CardView>
 
@@ -200,22 +200,18 @@
         app:cardElevation="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-
         app:layout_constraintStart_toStartOf="parent">
 
         <TextView
             android:id="@+id/customSpeed"
+            style="@style/StyleSpeed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/status_radio_speed"
             android:button="@drawable/status_radio_speed"
             android:foreground="?attr/selectableItemBackground"
             android:gravity="center"
             android:text="..."
-            android:textColor="@color/gray"
-            android:textStyle="bold"
-
-            />
+            android:textStyle="bold" />
     </androidx.cardview.widget.CardView>
 
 

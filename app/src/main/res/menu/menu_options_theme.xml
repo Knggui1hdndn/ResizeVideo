@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <item
+        android:id="@+id/mnDark"
+        android:title="Dark" />
+    <item
+        android:id="@+id/mnLight"
+        android:title="Light" />
+    <item
+        android:id="@+id/mnSystem"
+        android:title="System Theme" />
+</menu>

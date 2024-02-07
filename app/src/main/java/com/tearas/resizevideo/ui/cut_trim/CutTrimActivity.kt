@@ -1,17 +1,22 @@
 package com.tearas.resizevideo.ui.cut_trim
 
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Looper
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.view.animation.AnimationUtils
-import com.arthenica.mobileffmpeg.FFprobe
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
+import com.arthenica.ffmpegkit.FFprobeKit
 import com.google.android.material.button.MaterialButton
 import com.jaygoo.widget.OnRangeChangedListener
 import com.jaygoo.widget.RangeSeekBar
+import com.tearas.resizevideo.MainActivity
 import com.tearas.resizevideo.core.BaseActivity
 import com.tearas.resizevideo.R
 import com.tearas.resizevideo.databinding.ActivityCutTrimBinding
@@ -21,6 +26,7 @@ import com.tearas.resizevideo.ui.select_compress.SelectCompressActivity
 import com.tearas.resizevideo.utils.IntentUtils.getOptionMedia
 import com.tearas.resizevideo.utils.IntentUtils.passOptionMedia
 import com.tearas.resizevideo.utils.Utils
+import com.tearas.resizevideo.utils.Utils.isDarkMode
 
 
 class CutTrimActivity : BaseActivity<ActivityCutTrimBinding>() {
@@ -37,13 +43,15 @@ class CutTrimActivity : BaseActivity<ActivityCutTrimBinding>() {
     private lateinit var runnable: Runnable
     override fun initData() {
         optionMedia = intent.getOptionMedia()!!
-        val media = optionMedia.data[0]
+        val media = optionMedia.dataOriginal[0]
         path = media.path
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     override fun initView() {
 
         binding.apply {
+//            includeCutTrim.mCutTrim.setBackgroundColor(getColorConfig())
             setToolbar(
                 binding.toolbar,
                 "Edit Video",
@@ -53,6 +61,7 @@ class CutTrimActivity : BaseActivity<ActivityCutTrimBinding>() {
             setUpDefaultRangeSeekBar(path)
             setAdapterFrameVideo()
             video.setVideoPath(path)
+            handleButtonClick(R.anim.trim_transition, ::setUpUITrimVideo, trim, cut)
 
             cut.setOnClickListener {
                 handleButtonClick(R.anim.cut_transition, ::setUpUICutVideo, cut, trim)
@@ -61,7 +70,7 @@ class CutTrimActivity : BaseActivity<ActivityCutTrimBinding>() {
             trim.setOnClickListener {
                 handleButtonClick(R.anim.trim_transition, ::setUpUITrimVideo, trim, cut)
             }
-
+            trim.performClick()
             frameLayout.setOnClickListener {
                 isPlaying = !isPlaying
                 isVisibilityPlaying()
@@ -85,12 +94,17 @@ class CutTrimActivity : BaseActivity<ActivityCutTrimBinding>() {
             }, 1000)
             return true
         }
+        if (item.itemId == android.R.id.home) {
+            startActivity(Intent(this, MainActivity::class.java))
+            finish()
+            return true
+        }
         return super.onOptionsItemSelected(item)
     }
 
     private fun createOptionMedia(): OptionMedia {
         return OptionMedia(
-            data = optionMedia.data,
+            dataOriginal = optionMedia.dataOriginal,
             mediaAction = if (idButtonClicked == R.id.trim) MediaAction.CutOrTrim.TrimVideo else MediaAction.CutOrTrim.CutVideo,
             endTime = (right / 1000).toLong(),
             startTime = (left / 1000).toLong()
@@ -108,7 +122,8 @@ class CutTrimActivity : BaseActivity<ActivityCutTrimBinding>() {
                 binding.video.seekTo(left.toInt())
                 handler.postDelayed(runnable1, (right - left).toLong())
             } else {
-                val duration = FFprobe.getMediaInformation(path).duration.toFloat().toLong() * 1000
+                val duration =
+                    FFprobeKit.getMediaInformation(path).duration.toFloat().toLong() * 1000
                 var firstPartStartTime = 0L
                 var firstPartEndTime = 0L
                 var secondPartStartTime = 0L
@@ -147,13 +162,14 @@ class CutTrimActivity : BaseActivity<ActivityCutTrimBinding>() {
         if (idButtonClicked != activeButton.id) {
             val animation = AnimationUtils.loadAnimation(this@CutTrimActivity, transitionResId)
             binding.overlay.startAnimation(animation)
-            uiSetupFunction()
+
 
             activeButton.setTextColor(Color.WHITE)
             activeButton.iconTint = ColorStateList.valueOf(Color.WHITE)
 
             inactiveButton.setTextColor(Color.GRAY)
             inactiveButton.iconTint = ColorStateList.valueOf(Color.GRAY)
+            uiSetupFunction()
             idButtonClicked = activeButton.id
             handler.removeCallbacksAndMessages(null)
             handler.post(runnable)
@@ -166,7 +182,7 @@ class CutTrimActivity : BaseActivity<ActivityCutTrimBinding>() {
 
     private fun setUpUICutVideo() {
         binding.includeCutTrim.apply {
-            setRangeSeekBarColorTopBottom(getColor(R.color.maintream), Color.WHITE)
+            setRangeSeekBarColorTopBottom(getColor(R.color.maintream), getColorConfig())
             setThumbAndColorProgress(false)
             setProgress()
             rangeProgress.setProgress(left, right)
@@ -175,7 +191,7 @@ class CutTrimActivity : BaseActivity<ActivityCutTrimBinding>() {
 
     private fun setUpUITrimVideo() {
         binding.includeCutTrim.apply {
-            setRangeSeekBarColorTopBottom(Color.WHITE, getColor(R.color.maintream))
+            setRangeSeekBarColorTopBottom(getColorConfig(), getColor(R.color.maintream))
             binding.includeCutTrim.rangeProgress.progressDefaultColor = getColor(R.color.maintream1)
             setThumbAndColorProgress(true)
             setProgress()
@@ -207,6 +223,12 @@ class CutTrimActivity : BaseActivity<ActivityCutTrimBinding>() {
         }
     }
 
+    private fun getColorConfig() =
+        if (isDarkMode()) {
+            getColor(R.color.bg_dark_screen_2)
+        } else {
+            Color.WHITE
+        }
 
     private fun setProgress() {
         binding.includeCutTrim.apply {
@@ -226,7 +248,7 @@ class CutTrimActivity : BaseActivity<ActivityCutTrimBinding>() {
 
         binding.includeCutTrim.apply {
             setUnEnabled(rangeBottom, rangeTop, rangeTime)
-            right = FFprobe.getMediaInformation(path).duration.toFloat() * 1000
+            right = FFprobeKit.getMediaInformation(path).duration.toFloat() * 1000
             setDefaultProgress(right)
             setUpUITrimVideo()
 
@@ -293,4 +315,5 @@ class CutTrimActivity : BaseActivity<ActivityCutTrimBinding>() {
             }
         }
     }
+
 }

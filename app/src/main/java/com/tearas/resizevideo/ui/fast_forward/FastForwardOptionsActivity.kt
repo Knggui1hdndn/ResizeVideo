@@ -13,6 +13,7 @@ import com.tearas.resizevideo.core.BaseActivity
 import com.tearas.resizevideo.databinding.ActivityFastForwardBinding
 import com.tearas.resizevideo.databinding.ActivityFastForwardOptionsBinding
 import com.tearas.resizevideo.model.MediaInfo
+import com.tearas.resizevideo.model.OptionCompress
 import com.tearas.resizevideo.model.OptionMedia
 import com.tearas.resizevideo.model.Resolution
 import com.tearas.resizevideo.ui.process.ProcessActivity
@@ -26,12 +27,11 @@ class FastForwardOptionsActivity : BaseActivity<ActivityFastForwardOptionsBindin
 
     private lateinit var media: OptionMedia
     private lateinit var videoInfo: MediaInfo
-    private val listSize =
-        arrayOf(Resolution.ORIGIN, Resolution.SMALL, Resolution.MEDIUM, Resolution.LARGE)
+    private val listSize = arrayOf(OptionCompress.Origin, OptionCompress.Small, OptionCompress.Medium, OptionCompress.Large)
     private var indexSize = 2
     override fun initData() {
         media = intent.getOptionMedia()!!
-        videoInfo = media.data[0]
+        videoInfo = media.dataOriginal[0]
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
@@ -69,7 +69,7 @@ class FastForwardOptionsActivity : BaseActivity<ActivityFastForwardOptionsBindin
 
     private fun createOptionMedia(): OptionMedia {
         return media.copy(
-            size = listSize[indexSize],
+            optionCompress = listSize[indexSize],
             mimetype = media.mimetype,
             withAudio = binding.cbAudio.isChecked
         )

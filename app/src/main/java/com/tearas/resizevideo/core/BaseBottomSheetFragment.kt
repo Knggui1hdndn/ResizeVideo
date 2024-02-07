@@ -6,6 +6,7 @@ import android.view.View
 import android.view.WindowManager
 import androidx.fragment.app.FragmentActivity
 import androidx.viewbinding.ViewBinding
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
@@ -22,10 +23,17 @@ abstract class BaseBottomSheetFragment<VB : ViewBinding>(private val layout: Int
             val bottomSheetDialog = dialogInterface as BottomSheetDialog
             val bottomSheet =
                 bottomSheetDialog.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
+            if (bottomSheet != null) {
+                BottomSheetBehavior.from(bottomSheet). apply {
+                    state = BottomSheetBehavior.STATE_EXPANDED
+                    peekHeight = 0
+                }
+            }
             val layoutParams = bottomSheet?.layoutParams
             bottomSheet?.setBackgroundColor(Color.TRANSPARENT)
-            layoutParams?.height = WindowManager.LayoutParams.MATCH_PARENT
+            layoutParams?.height = WindowManager.LayoutParams.WRAP_CONTENT
             bottomSheet?.layoutParams = layoutParams
+            isCancelable = true
         }
 
         super.onViewCreated(view, savedInstanceState)

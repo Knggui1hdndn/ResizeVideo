@@ -64,25 +64,21 @@ android {
 
 dependencies {
     implementation(files("libs/adshelper.aar"))
-     implementation("androidx.multidex:multidex:2.0.1")
+    implementation("androidx.multidex:multidex:2.0.1")
     implementation("com.google.android.gms:play-services-ads-identifier:18.0.1")
     implementation("com.google.android.gms:play-services-ads:22.6.0")
-    implementation ("com.google.android.exoplayer:exoplayer:2.19.1")
+    implementation("com.google.android.exoplayer:exoplayer:2.19.1")
     implementation("com.android.billingclient:billing-ktx:6.1.0")
     implementation("com.facebook.shimmer:shimmer:0.5.0")
     implementation("com.airbnb.android:lottie:6.0.0")
     implementation("com.makeramen:roundedimageview:2.3.0")
 //    implementation("com.google.gms:google-services:4.4.0")
-
 //    implementation("com.github.wseemann:FFmpegMediaMetadataRetriever:1.0.14")
     implementation("com.github.Jay-Goo:RangeSeekBar:v3.0.0")
-
-
     implementation("com.google.code.gson:gson:2.10.1")
     implementation("com.github.bumptech.glide:glide:4.16.0")
-    implementation("com.arthenica:mobile-ffmpeg-full:4.4")
 
-
+    implementation("com.arthenica:ffmpeg-kit-full-gpl:4.4")
     implementation("me.relex:circleindicator:2.1.6")
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.appcompat:appcompat:1.6.1")

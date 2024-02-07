@@ -3,31 +3,38 @@ package com.tearas.resizevideo.ui.select_compress
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
+import android.util.Log
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.ViewModelProvider
 import com.tearas.resizevideo.core.BaseActivity
 import com.tearas.resizevideo.R
 import com.tearas.resizevideo.databinding.ActivitySelectCompressBinding
+import com.tearas.resizevideo.model.OptionCompress
 import com.tearas.resizevideo.model.OptionMedia
 import com.tearas.resizevideo.model.Resolution
 import com.tearas.resizevideo.ui.process.ProcessActivity
 import com.tearas.resizevideo.utils.IntentUtils.getOptionMedia
 import com.tearas.resizevideo.utils.IntentUtils.passOptionMedia
 import com.tearas.resizevideo.utils.ResolutionUtils.calculateResolution
+import com.tearas.resizevideo.utils.Utils
+import com.tearas.resizevideo.utils.Utils.isDarkMode
 
 class SelectCompressActivity : BaseActivity<ActivitySelectCompressBinding>() {
 
     private var resolutionSelected: Int = 0
     private var resolutions: Array<String> = arrayOf()
     private lateinit var newResolution: Resolution
-    private var listSize: Array<String> =
+    private var listSize: Array<OptionCompress> =
         arrayOf(
-            Resolution.SMALL,
-            Resolution.MEDIUM,
-            Resolution.LARGE,
-            Resolution.ORIGIN,
-            Resolution.CUSTOM
+            OptionCompress.Small,
+            OptionCompress.Medium,
+            OptionCompress.Large,
+            OptionCompress.Origin,
+            OptionCompress.Custom,
+            OptionCompress.CustomFileSize,
+            OptionCompress.AdvanceOption
+
         )
     private val viewModel: SelectCompressViewModel by lazy {
         ViewModelProvider(this)[SelectCompressViewModel::class.java]
@@ -45,11 +52,12 @@ class SelectCompressActivity : BaseActivity<ActivitySelectCompressBinding>() {
         setupUI()
     }
 
+    private var fileSize: Long? = 0
     private lateinit var mediaOption: OptionMedia
     private lateinit var map: HashMap<ConstraintLayout, List<AppCompatTextView>>
     private fun setupData() {
         mediaOption = intent.getOptionMedia()!!
-        val array = mediaOption.data
+        val array = mediaOption.dataOriginal
         resolutions = if (array.size == 1) listSize.map {
             viewModel.postResolutionOrigin(array[0].resolution)
             array[0].resolution?.calculateResolution(it).toString()
@@ -75,6 +83,7 @@ class SelectCompressActivity : BaseActivity<ActivitySelectCompressBinding>() {
     @SuppressLint("SetTextI18n")
     private fun setupUI() {
         binding.apply {
+            showBannerAds(bannerAds)
             setTextResolution()
 
             onClickOptions()
@@ -95,7 +104,7 @@ class SelectCompressActivity : BaseActivity<ActivitySelectCompressBinding>() {
         val listSize = resources.getStringArray(R.array.list_size)
 
         for (i in 0 until 4) {
-            val resolutionText = if (mediaOption.data.size == 1) {
+            val resolutionText = if (mediaOption.dataOriginal.size == 1) {
                 " - " + "${listSize[i]} - ${resolutions[i]}"
             } else {
                 " - " + listSize[i]
@@ -111,11 +120,12 @@ class SelectCompressActivity : BaseActivity<ActivitySelectCompressBinding>() {
 
     private fun setUpViewPager() {
         val videoCompressAdapter = VideoCompressAdapter(this@SelectCompressActivity)
-        videoCompressAdapter.submitData = mediaOption.data
+        videoCompressAdapter.submitData = mediaOption.dataOriginal
         binding.viewPager.adapter = videoCompressAdapter
         binding.indicator.setViewPager(binding.viewPager)
     }
 
+    @SuppressLint("SetTextI18n")
     private fun onClickOptions() {
         binding.apply {
 
@@ -125,6 +135,16 @@ class SelectCompressActivity : BaseActivity<ActivitySelectCompressBinding>() {
                 optionLarge to listOf(labelTextView3, descriptionTextView3, resolutionTextView3),
                 optionBest to listOf(labelTextView4, descriptionTextView4, resolutionTextView4),
                 optionCustom to listOf(labelTextView5, descriptionTextView5, resolutionTextView5),
+                optionCustomFileSize to listOf(
+                    labelTextView6,
+                    descriptionTextView6,
+                    resolutionTextView6
+                ),
+                optionSelectRBF to listOf(
+                    labelTextView7,
+                    descriptionTextView7,
+                    resolutionTextView7
+                ),
             )
 
             optionSmall.setOnClickListener { view ->
@@ -152,9 +172,43 @@ class SelectCompressActivity : BaseActivity<ActivitySelectCompressBinding>() {
                 resolutionSelected = 4
                 ChoseResolutionDialogFragment.getInstance().show(this@SelectCompressActivity)
             }
+
+            optionCustomFileSize.setOnClickListener {
+                resolutionSelected = 5
+                CustomFileSizeDialogFragment(::handleCustomFileSize)
+                    .show(supportFragmentManager, CustomFileSizeDialogFragment::class.simpleName)
+            }
+
+            optionSelectRBF.setOnClickListener { view ->
+                showAdvancedCompression()
+            }
         }
     }
 
+    private fun showAdvancedCompression() {
+        AdvanceCompressionBottomSheetFragment(mediaOption.dataOriginal[0].bitrate,
+            object : ChoseAdvance {
+                override fun onChoseAdvance(
+                    optionCompress: OptionCompress,
+                    bitRate: Long,
+                    frameRate: Int
+                ) {
+                    mediaOption.optionCompress = optionCompress
+                    mediaOption.bitrate = bitRate
+                    mediaOption.frameRate = frameRate
+                    resolutionSelected = 6
+                    applyItemStyle(binding.optionSelectRBF, map)
+                }
+            }).show(supportFragmentManager, AdvanceCompressionBottomSheetFragment::class.simpleName)
+    }
+
+    private fun handleCustomFileSize(size: Long, unit: String) {
+        applyItemStyle(binding.optionCustomFileSize, map)
+        binding.descriptionTextView6.text =
+            getString(R.string.description_custom_file_size) + " - $size $unit"
+        fileSize =
+            if (unit == "MB") Utils.convertMBtoBit(size) else Utils.convertKBtoBit(size)
+     }
 
     private fun applyItemStyle(
         item: ConstraintLayout, map: HashMap<ConstraintLayout, List<AppCompatTextView>>
@@ -162,17 +216,24 @@ class SelectCompressActivity : BaseActivity<ActivitySelectCompressBinding>() {
         map.forEach { (key, value) ->
             key.setBackgroundResource(if (key == item) R.drawable.corners_troke_blu_2 else R.drawable.corners_troke_gray_2)
             value.forEach {
-                it.setTextColor(if (key == item) getColor(R.color.maintream) else Color.BLACK)
+                it.setTextColor(
+                    if (key == item) getColor(R.color.maintream) else if (
+                        !isDarkMode())
+                        Color.BLACK else Color.WHITE
+                )
             }
         }
     }
 
     private fun createOptionMedia(): OptionMedia {
-         return mediaOption.copy(
-            data = mediaOption.data,
-            size = listSize[resolutionSelected],
+        return mediaOption.copy(
+            dataOriginal = mediaOption.dataOriginal,
+            optionCompress = listSize[resolutionSelected],
             mimetype = "mp4",
-            newResolution = if (listSize[resolutionSelected] == Resolution.CUSTOM) newResolution else Resolution()
+            newResolution = if (
+                listSize[resolutionSelected] == OptionCompress.Custom
+            ) newResolution else Resolution(),
+            fileSize = this.fileSize!!
         )
     }
 }

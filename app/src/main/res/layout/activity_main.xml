@@ -11,8 +11,10 @@
     tools:openDrawer="start">
 
     <androidx.appcompat.widget.LinearLayoutCompat
+        style="@style/BackgroundScreen"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+
         android:orientation="vertical">
 
         <androidx.appcompat.widget.Toolbar
@@ -42,6 +44,7 @@
                     android:layout_margin="5dp"
                     android:layout_weight="5"
                     android:background="@drawable/corners_troke"
+                    android:foreground="?attr/selectableItemBackground"
                     android:gravity="center"
                     android:orientation="vertical"
                     android:padding="5dp">
@@ -65,6 +68,7 @@
                     android:layout_margin="5dp"
                     android:layout_weight="5"
                     android:background="@drawable/corners_troke"
+                    android:foreground="?attr/selectableItemBackground"
                     android:gravity="center"
                     android:orientation="vertical"
                     android:padding="5dp">
@@ -94,6 +98,7 @@
                     android:layout_margin="5dp"
                     android:layout_weight="5"
                     android:background="@drawable/corners_troke"
+                    android:foreground="?attr/selectableItemBackground"
                     android:gravity="center"
                     android:orientation="vertical"
                     android:padding="5dp">
@@ -117,6 +122,7 @@
                     android:layout_margin="5dp"
                     android:layout_weight="5"
                     android:background="@drawable/corners_troke"
+                    android:foreground="?attr/selectableItemBackground"
                     android:gravity="center"
                     android:orientation="vertical"
                     android:padding="5dp">
@@ -134,36 +140,38 @@
                 </LinearLayout>
             </androidx.appcompat.widget.LinearLayoutCompat>
 
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:background="@drawable/corners_troke_gray"
-                android:paddingHorizontal="20dp"
-                android:paddingVertical="15dp">
+                android:layout_margin="5dp">
 
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/appCompatImageView2"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:paddingTop="5dp"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/folder"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.0" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    style="@style/textMain"
-                    android:layout_marginStart="15dp"
-                    android:text="Compressed Videos"
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/compressed"
+                    style="@style/CustomStroke"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="start|center"
+                    android:padding="15sp"
+                    android:paddingStart="20dp"
+                    android:text="@string/compressed_videos"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:backgroundTint="@android:color/transparent"
+                    app:icon="@drawable/folder"
+                    app:iconPadding="15sp"
+                    app:iconSize="40dp"
+                    app:iconTint="@color/maintream"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/appCompatImageView2"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/appCompatImageView2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="15sp"
                     android:src="@drawable/ic_arrow_24"
                     android:tint="@color/maintream"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -171,12 +179,14 @@
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.appcompat.widget.LinearLayoutCompat>
+
         <FrameLayout
+            android:id="@+id/container"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/container"/>
+            android:layout_height="wrap_content" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
+
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigation_view"
         android:layout_width="wrap_content"

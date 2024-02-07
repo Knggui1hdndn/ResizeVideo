@@ -2,7 +2,6 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:background="@color/white"
     android:layout_height="match_parent">
 
     <androidx.cardview.widget.CardView
@@ -27,8 +26,8 @@
 
     <LinearLayout
         android:layout_width="0dp"
-        android:layout_marginStart="15sp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="15sp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -36,20 +35,19 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ellipsize="middle"
             android:lines="1"
-            android:id="@+id/name"
-            android:textColor="@color/black"
-            android:textSize="17sp"
-            android:text="nguyen duy khang" />
+            android:text="nguyen duy khang"
+            android:textSize="17sp" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
-            android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <androidx.appcompat.widget.AppCompatTextView

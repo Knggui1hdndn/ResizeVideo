@@ -39,6 +39,37 @@
     <string name="select_compression">Select Compression</string>
     <string name="without_compression">Without Compression</string>
     <string name="continues">Continue</string>
+    <string name="rename">Rename</string>
+    <string name="compressed">Compressed</string>
+    <string name="original">Original</string>
+    <string name="compare">Compare</string>
+    <string name="result">Result</string>
+    <string name="error">Error</string>
+    <string name="player">Player</string>
+    <string name="unsaved_video">Unsaved Video</string>
+    <string name="saved_videos">Saved Videos</string>
+    <string name="compressed_videos">Compressed Videos</string>
+    <string name="with_audio">With Audio</string>
+    <string name="custom_file_size">Custom File Size</string>
+    <string name="label_custom_file_size">Custom File Size</string>
+    <string name="description_custom_file_size">Optimize resolution and quantity based on file size</string>
+    <string name="advanced_compression">Advanced Compression</string>
+    <string name="select_resolution_bitrate_and_frame_rate">Select resolution, bitrate and frame rate</string>
+    <string name="play">Play</string>
+    <string name="compare_with_original">Compare With Original</string>
+    <string name="delete">Delete</string>
+    <string name="are_you_sure">Are you sure?</string>
+    <string name="are_you_sure_you_want_to_delete_this_video">Are you sure you want to delete this video</string>
+    <string name="are_you_sure_you_want_to_cancel_this_job_curent_compressed_video_will_be_removed_too">Are you sure you want to cancel this job,curent compressed video will be removed too</string>
+    <string name="ok">OK</string>
+    <string name="the_original_files_will_be_replaced_with_the_new_compressed_ones_are_you_sure_you_want_to_do_that">The original files will be replaced with the new compressed ones. Are you sure you want to do that?</string>
+    <string name="replace">Replace</string>
+    <string name="frame_rate">Frame rate</string>
+    <string name="bitrate">Bitrate</string>
+    <string name="chosse">Chosse</string>
+    <string name="something_went_wrong_please_try_again">Something went wrong please try again</string>
+    <string name="language">Language</string>
+    <string name="english">English</string>
 
     <string-array name="list_size" translatable="true">
         <item>low resolution</item>

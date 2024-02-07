@@ -41,7 +41,7 @@
                 android:title="@string/rate_app_title"
                 app:showAsAction="always" />
             <item
-                android:id="@+id/send"
+                android:id="@+id/share"
                 android:icon="@drawable/send"
                 android:title="@string/share_title"
                 app:showAsAction="always" />

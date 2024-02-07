@@ -13,6 +13,7 @@ data class Resolution(var width: Int = 0, var height: Int = 0) : Serializable {
         const val LARGE = "large"
         const val ORIGIN = "origin"
         const val CUSTOM = "custom"
+        const val CUSTOM_FILE_SIZE = "custom_file_size"
     }
 
     fun getRatio() = width * 1.0f / height
@@ -22,14 +23,16 @@ data class Resolution(var width: Int = 0, var height: Int = 0) : Serializable {
 
 data class MediaInfo(
     val id: Long,
-    val name: String,
+    var name: String,
     val path: String,
     var size: Long,
-    val resolution: Resolution? = null,
+    var resolution: Resolution? = null,
     var time: String,
     var mime: String,
-    var bitrate: Float,
+    var bitrate: Long,
     var isSelected: Boolean = false
-) : Serializable
+) : Serializable {
+    fun isVideo() = mime == "mp4"
+}
 
 class MediaInfos : ArrayList<MediaInfo>() {}

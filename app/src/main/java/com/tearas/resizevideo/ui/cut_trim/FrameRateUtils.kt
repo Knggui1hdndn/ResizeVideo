@@ -3,7 +3,6 @@ package com.tearas.resizevideo.ui.cut_trim
 import android.graphics.Bitmap
 import android.media.MediaMetadataRetriever
 import android.util.Log
-import com.arthenica.mobileffmpeg.FFprobe
 
 object FrameRateUtils {
     fun getFrames(path: String): ArrayList<Bitmap> {
