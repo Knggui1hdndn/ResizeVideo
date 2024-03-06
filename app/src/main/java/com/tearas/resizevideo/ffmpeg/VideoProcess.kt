@@ -9,22 +9,23 @@ import com.arthenica.ffmpegkit.MediaInformation
 import com.arthenica.ffmpegkit.ReturnCode
 import com.arthenica.ffmpegkit.Session
 import com.tearas.resizevideo.model.MediaInfo
+import com.tearas.resizevideo.model.MediaInfos
+import com.tearas.resizevideo.model.OptionMedia
 import com.tearas.resizevideo.model.Resolution
 import com.tearas.resizevideo.utils.Utils
-import com.tearas.resizevideo.utils.Utils.formatToInt
 import java.io.File
 import kotlin.math.abs
 
 
 class VideoProcess {
-    class Builder(val context: Context) {
+    class Builder(val context: Context, private val optionMedia: OptionMedia) {
         companion object {
             fun cancel() = FFmpegKit.cancel()
         }
 
+        private val durations = arrayListOf<Float>()
         private val commands = ArrayList<String>()
         private var pathOutputs = ArrayList<String>()
-        private var pathInputs = ArrayList<String>()
         private val mediaInfoOutput = ArrayList<MediaInfo>()
         private var countSuccess = 0
         private var countFailed = 0
@@ -37,11 +38,11 @@ class VideoProcess {
 
         init {
             FFmpegKitConfig.enableStatisticsCallback { newStatistics ->
-                val process = (newStatistics.time.toFloat() / duration) * 100
-                val min = minOf(100, process.toInt())
                 var currentIndex = 0
                 if (count % 2 == 0) currentIndex = (count / 2) - 1
                 if (!isTwoCompress) currentIndex = this.currentIndex
+                val process = (newStatistics.time.toFloat() / durations[currentIndex]) * 100
+                val min = minOf(100, process.toInt())
                 iProcess.processElement(abs(currentIndex), min)
             }
         }
@@ -78,6 +79,7 @@ class VideoProcess {
             commands: List<String>,
             iProcess: IProcessFFmpeg
         ) {
+            setProgress()
             initializeCompressAsync(commands, iProcess)
             processFileSet(this.commands, 0)
         }
@@ -86,9 +88,47 @@ class VideoProcess {
             commands: List<String>,
             iProcess: IProcessFFmpeg
         ) {
+            setProgress()
             initializeTwoCompress(commands, iProcess)
             processFileSet(this.commands, 0)
         }
+
+        private fun setProgress() {
+            optionMedia.dataOriginal.forEach { it ->
+                val timeVideo = Utils.convertTimeToMiliSeconds(it.time).toFloat()
+                val duration: Float = (
+                        when (optionMedia.mediaAction) {
+                            is MediaAction.CutOrTrim.CutVideo -> {
+                                timeVideo - (optionMedia.endTime - optionMedia.startTime)
+                            }
+
+                            is MediaAction.CutOrTrim.TrimVideo -> {
+                                optionMedia.endTime - optionMedia.startTime
+                            }
+
+                            is MediaAction.FastForward -> {
+                                if (optionMedia.isFastVideo) timeVideo / optionMedia.speed
+                                else timeVideo * optionMedia.speed
+                            }
+
+                            is MediaAction.JoinVideo -> {
+                                optionMedia.dataOriginal.sumOf { Utils.convertTimeToMiliSeconds(it.time) }
+                            }
+
+                            else -> timeVideo
+                        }
+                        ).toFloat()
+                durations.add(duration)
+                if (optionMedia.mediaAction is MediaAction.CutOrTrim.CutVideo ||
+                    optionMedia.mediaAction is MediaAction.CutOrTrim.TrimVideo ||
+                    optionMedia.mediaAction is MediaAction.FastForward ||
+                    optionMedia.mediaAction is MediaAction.JoinVideo
+                ) {
+                    return@forEach
+                }
+            }
+        }
+
 
         private fun initializeCompressAsync(commands: List<String>, iProcess: IProcessFFmpeg) {
             this.iProcess = iProcess
@@ -96,7 +136,6 @@ class VideoProcess {
             this.commands.addAll(commands)
             commands.forEach {
                 pathOutputs.add(it.substring(it.lastIndexOf(" ") + 1))
-                pathInputs.add(it.split(" ")[1])
             }
         }
 
@@ -108,7 +147,6 @@ class VideoProcess {
                 if (positionPass2.size >= 2) {
                     pass1 = "-y -i " + positionPass2[1].trim()
                     pass2 = "-y -i " + positionPass2[2].trim()
-                    pathInputs.add(command.split(" ")[2])
                     pathOutputs.add(command.substring(command.lastIndexOf(" ") + 1))
                     this.commands.addAll(listOf(pass1, pass2))
                 } else {
@@ -126,24 +164,15 @@ class VideoProcess {
                 resetToZero()
                 return
             }
-            setDuration()
             FFmpegKit.executeAsync(commands[currentIndex]) { session ->
                 handleExecutionResult(session)
             }
         }
 
-        private fun setDuration() {
-            var currentIndex = 0
-            if (count % 2 == 0) currentIndex = (count / 2) - 1
-            if (!isTwoCompress) currentIndex = this.currentIndex
-            val pathInputs = pathInputs[currentIndex]
-            duration = FFprobeKit.getMediaInformation(pathInputs)
-                .mediaInformation.duration.toFloat().toInt() * 1000
-        }
 
         private var count = 1
         private fun handleExecutionResult(session: Session) {
-             if (ReturnCode.isSuccess(session.returnCode)) {
+            if (ReturnCode.isSuccess(session.returnCode)) {
                 if (count % 2 == 0 || !isTwoCompress) {
                     var currentIndex = 0
                     if (count % 2 == 0) currentIndex = (count / 2) - 1
@@ -169,7 +198,7 @@ class VideoProcess {
                 iProcess.onFailure("Something went wrong. Please try again.")
                 cleanupAndFail("Something went wrong. Please try again.")
                 countFailed += 1
-             }
+            }
         }
 
         private fun cleanupAndFail(errorMessage: String) {
@@ -187,5 +216,7 @@ class VideoProcess {
             commands.clear()
             mediaInfoOutput.clear()
         }
+
+
     }
 }

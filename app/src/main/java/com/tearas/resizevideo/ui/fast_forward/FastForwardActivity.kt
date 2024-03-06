@@ -40,6 +40,7 @@ class FastForwardActivity : BaseActivity<ActivityFastForwardBinding>() {
         R.id.txt2_5x to 2.5f,
         R.id.txt3x to 3f
     )
+    private var isFast = true
 
     @SuppressLint("UseCompatLoadingForDrawables", "SetTextI18n")
     override fun initView() {
@@ -55,10 +56,16 @@ class FastForwardActivity : BaseActivity<ActivityFastForwardBinding>() {
         setBackground(binding.txt1x.id)
         binding.apply {
             setToolbar(
-                binding.toolbar, "Fast Forward", getDrawable(R.drawable.baseline_arrow_back_24)!!
+                binding.toolbar,
+                "Speed Adjustment",
+                getDrawable(R.drawable.baseline_arrow_back_24)!!
             )
             setUpVideo()
             setOnClickSpeed()
+            radioGroup.setOnCheckedChangeListener { radioGroup, i ->
+                isFast = radioGroup.indexOfChild(findViewById(radioGroup.checkedRadioButtonId)) == 0
+                setSpeed(speed)
+            }
 
             frameLayout.setOnClickListener {
                 isPlaying = !isPlaying
@@ -91,13 +98,18 @@ class FastForwardActivity : BaseActivity<ActivityFastForwardBinding>() {
         CustomSpeedDialogFragment {
             setSpeed(it)
             binding.customSpeed.text = "$it x"
+            setBackground(binding.customSpeed.id)
         }.show(
             supportFragmentManager, CustomSpeedDialogFragment::class.simpleName
         )
     }
 
     private fun setSpeed(it: Float) {
-        mediaPlayer.playbackParams = mediaPlayer.playbackParams.setSpeed(it)
+        mediaPlayer.playbackParams = if (isFast) {
+            mediaPlayer.playbackParams.setSpeed(it)
+        } else {
+            mediaPlayer.playbackParams.setSpeed(1 / it)
+        }
         speed = it
     }
 
@@ -134,8 +146,6 @@ class FastForwardActivity : BaseActivity<ActivityFastForwardBinding>() {
     }
 
 
-
-
     @SuppressLint("UseCompatLoadingForDrawables")
     private fun setBackground(idChecked: Int) {
         options.forEach {
@@ -153,7 +163,8 @@ class FastForwardActivity : BaseActivity<ActivityFastForwardBinding>() {
 
     private fun createOptionMedia(): OptionMedia {
         return intent.getOptionMedia()!!.copy(
-            speed = this.speed
+            speed = this.speed,
+            isFastVideo = isFast
         )
     }
 }

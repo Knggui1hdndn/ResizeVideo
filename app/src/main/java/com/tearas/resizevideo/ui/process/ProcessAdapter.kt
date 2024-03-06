@@ -4,7 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
-import com.knd.duantotnghiep.testsocket.core.BaseAdapter
+import com.tearas.resizevideo.core.BaseAdapter
 import com.tearas.resizevideo.databinding.ItemProcessVideoBinding
 import com.tearas.resizevideo.model.MediaInfo
 

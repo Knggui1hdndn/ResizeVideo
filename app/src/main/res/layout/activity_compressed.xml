@@ -16,7 +16,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:title="@string/compressed"
-        app:titleTextColor="@color/white" />
+        app:titleTextColor="@color/black" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnVideoSave"

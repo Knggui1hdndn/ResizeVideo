@@ -1,4 +1,4 @@
-package com.knd.duantotnghiep.testsocket.core
+package com.tearas.resizevideo.core
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -9,8 +9,8 @@ import androidx.viewbinding.ViewBinding
 abstract class BaseAdapter<VB : ViewBinding, O : Any> :
     RecyclerView.Adapter<BaseAdapter<VB, O>.RecyclerViewHolder>() {
 
-    private var onClickListener: ((O) -> Unit)? = null
-    private var onLongClickListener: ((O) -> Unit)? = null
+    private var onClickListener: ((O,Int) -> Unit)? = null
+    private var onLongClickListener: ((O,Int) -> Unit)? = null
 
     @SuppressLint("NotifyDataSetChanged")
     var submitData = ArrayList<O>()
@@ -42,21 +42,21 @@ abstract class BaseAdapter<VB : ViewBinding, O : Any> :
         onBind(holder.binding, data)
 
         holder.binding.root.setOnClickListener {
-            onClickListener?.invoke(data)
+            onClickListener?.invoke(data,position)
         }
 
         holder.binding.root.setOnLongClickListener {
-            onLongClickListener?.invoke(data)
+            onLongClickListener?.invoke(data,position)
             true
         }
     }
 
 
-    fun setOnClickListener(onClick: (O) -> Unit) {
+    fun setOnClickListener(onClick: (O,Int) -> Unit) {
         onClickListener = onClick
     }
 
-    fun setOnLongClickListener(onClick: (O) -> Unit) {
+    fun setOnLongClickListener(onClick: (O,Int) -> Unit) {
         onLongClickListener = onClick
     }
 }

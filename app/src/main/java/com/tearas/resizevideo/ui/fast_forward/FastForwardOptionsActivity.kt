@@ -3,21 +3,19 @@ package com.tearas.resizevideo.ui.fast_forward
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
 import android.text.format.Formatter
 import android.view.MenuItem
 import com.bumptech.glide.Glide
 import com.tearas.resizevideo.R
 import com.tearas.resizevideo.core.BaseActivity
-import com.tearas.resizevideo.databinding.ActivityFastForwardBinding
 import com.tearas.resizevideo.databinding.ActivityFastForwardOptionsBinding
+import com.tearas.resizevideo.ffmpeg.MediaAction
 import com.tearas.resizevideo.model.MediaInfo
-import com.tearas.resizevideo.model.OptionCompress
+import com.tearas.resizevideo.model.OptionCompressType
 import com.tearas.resizevideo.model.OptionMedia
-import com.tearas.resizevideo.model.Resolution
 import com.tearas.resizevideo.ui.process.ProcessActivity
 import com.tearas.resizevideo.utils.IntentUtils.getOptionMedia
+import com.tearas.resizevideo.utils.IntentUtils.passActionMedia
 import com.tearas.resizevideo.utils.IntentUtils.passOptionMedia
 
 class FastForwardOptionsActivity : BaseActivity<ActivityFastForwardOptionsBinding>() {
@@ -27,7 +25,7 @@ class FastForwardOptionsActivity : BaseActivity<ActivityFastForwardOptionsBindin
 
     private lateinit var media: OptionMedia
     private lateinit var videoInfo: MediaInfo
-    private val listSize = arrayOf(OptionCompress.Origin, OptionCompress.Small, OptionCompress.Medium, OptionCompress.Large)
+    private val listSize = arrayOf(OptionCompressType.Origin, OptionCompressType.Small, OptionCompressType.Medium, OptionCompressType.Large)
     private var indexSize = 2
     override fun initData() {
         media = intent.getOptionMedia()!!
@@ -49,6 +47,7 @@ class FastForwardOptionsActivity : BaseActivity<ActivityFastForwardOptionsBindin
             continues.setOnClickListener {
                 val intent = Intent(this@FastForwardOptionsActivity, ProcessActivity::class.java)
                 intent.passOptionMedia(createOptionMedia())
+                intent.passActionMedia(MediaAction.FastForward)
                 startActivity(intent)
             }
         }
@@ -69,7 +68,7 @@ class FastForwardOptionsActivity : BaseActivity<ActivityFastForwardOptionsBindin
 
     private fun createOptionMedia(): OptionMedia {
         return media.copy(
-            optionCompress = listSize[indexSize],
+            optionCompressType = listSize[indexSize],
             mimetype = media.mimetype,
             withAudio = binding.cbAudio.isChecked
         )

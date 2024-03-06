@@ -2,7 +2,7 @@ package com.tearas.resizevideo.ui.video_pickers
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.knd.duantotnghiep.testsocket.core.BaseAdapter
+import com.tearas.resizevideo.core.BaseAdapter
 import com.tearas.resizevideo.databinding.ItemFolderBinding
 import com.tearas.resizevideo.model.FolderInfo
 

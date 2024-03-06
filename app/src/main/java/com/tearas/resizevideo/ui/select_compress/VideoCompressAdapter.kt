@@ -7,7 +7,7 @@ import android.text.format.Formatter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
-import com.knd.duantotnghiep.testsocket.core.BaseAdapter
+import com.tearas.resizevideo.core.BaseAdapter
 import com.tearas.resizevideo.R
 import com.tearas.resizevideo.databinding.ItemVideoCompressionBinding
 import com.tearas.resizevideo.model.MediaInfo

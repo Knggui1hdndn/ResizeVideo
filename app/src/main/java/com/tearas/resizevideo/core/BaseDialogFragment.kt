@@ -8,22 +8,26 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewbinding.ViewBinding
-import com.tearas.resizevideo.ui.select_compress.ChoseResolutionDialogFragment
 
 abstract class BaseDialogFragment<VB : ViewBinding>(private val layout: Int) :
     DialogFragment(layout) {
     private var _binding: VB? = null
     val binding get() = _binding!!
-    private lateinit var activity:FragmentActivity
+    private lateinit var activity: FragmentActivity
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         dialog!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        dialog!!.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-        activity=requireActivity()
+        dialog!!.window?.setLayout(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+        activity = requireActivity()
         _binding = getViewBinding(view)
         super.onViewCreated(view, savedInstanceState)
+        initData()
         initView()
-    }
+        initObserver()
 
+    }
 
 
     override fun onDestroy() {
@@ -33,5 +37,7 @@ abstract class BaseDialogFragment<VB : ViewBinding>(private val layout: Int) :
 
     abstract fun getViewBinding(view: View): VB
     abstract fun initView()
+    open fun initData() {}
+    open fun initObserver() {}
 
 }

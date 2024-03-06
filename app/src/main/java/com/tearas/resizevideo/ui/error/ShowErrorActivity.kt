@@ -1,12 +1,8 @@
 package com.tearas.resizevideo.ui.error
 
 import android.annotation.SuppressLint
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
 import android.view.MenuItem
 import androidx.activity.OnBackPressedCallback
-import com.tearas.resizevideo.MainActivity
 import com.tearas.resizevideo.R
 import com.tearas.resizevideo.core.BaseActivity
 import com.tearas.resizevideo.databinding.ActivityShowErrorBinding

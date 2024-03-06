@@ -15,7 +15,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:title="Error"
-        app:titleTextColor="@color/white" />
+        app:titleTextColor="@color/black"  />
 
     <TextView
         android:id="@+id/textView2"

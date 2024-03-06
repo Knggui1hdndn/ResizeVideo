@@ -11,8 +11,10 @@ import android.view.MenuItem
 import com.google.android.material.button.MaterialButton
 import com.tearas.resizevideo.R
 import com.tearas.resizevideo.core.BaseActivity
+import com.tearas.resizevideo.core.DialogClickListener
 import com.tearas.resizevideo.databinding.ActivityCompressedBinding
 import com.tearas.resizevideo.model.MediaInfo
+import com.tearas.resizevideo.utils.DialogUtils
 import com.tearas.resizevideo.utils.HandleMediaVideo
 import com.tearas.resizevideo.utils.HandleSaveResult
 import java.io.File
@@ -58,13 +60,16 @@ class CompressedActivity : BaseActivity<ActivityCompressedBinding>() {
 
     private fun showMoreBottomSheet(it: MediaInfo) {
         MoreBottomSheetFragment(it) {
-            DeleteDialogFragment {
-                handleDeleteMedia(it)
-            }.show(supportFragmentManager, DeleteDialogFragment::class.simpleName)
-        }.show(
-            supportFragmentManager,
-            MoreBottomSheetFragment::class.simpleName
-        )
+            DialogUtils.showDialogDelete(this, object : DialogClickListener {
+                override fun onPositive() {
+                    handleDeleteMedia(it)
+                }
+
+                override fun onNegative() {
+
+                }
+            })
+        }.show(supportFragmentManager, MoreBottomSheetFragment::class.simpleName)
     }
 
     private fun handleDeleteMedia(mediaInfo: MediaInfo) {

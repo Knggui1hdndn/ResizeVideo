@@ -1,39 +1,30 @@
 package com.tearas.resizevideo.ui.result
 
-import android.Manifest
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.provider.Settings
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.activity.result.registerForActivityResult
-import androidx.annotation.RequiresApi
-import androidx.core.content.FileProvider
-import com.arthenica.ffmpegkit.FFmpegKit
 import com.tearas.resizevideo.BuildConfig
-import com.tearas.resizevideo.MainActivity
+import com.tearas.resizevideo.ui.main.MainActivity
 import com.tearas.resizevideo.R
 import com.tearas.resizevideo.core.BaseActivity
+import com.tearas.resizevideo.core.DialogClickListener
 import com.tearas.resizevideo.databinding.ActivityResultBinding
+import com.tearas.resizevideo.ffmpeg.MediaAction
 import com.tearas.resizevideo.model.MediaInfo
+import com.tearas.resizevideo.utils.DialogUtils
 import com.tearas.resizevideo.utils.HandleMediaVideo
 import com.tearas.resizevideo.utils.HandleSaveResult
+import com.tearas.resizevideo.utils.IntentUtils.getActionMedia
 import com.tearas.resizevideo.utils.IntentUtils.getMediaInput
 import com.tearas.resizevideo.utils.IntentUtils.getMediaOutput
-import com.tearas.resizevideo.utils.RequestPermission
 import com.tearas.resizevideo.utils.Utils
 import com.tearas.resizevideo.utils.Utils.shareMultiple
 import com.tearas.resizevideo.utils.Utils.startToMainActivity
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileInputStream
 
@@ -47,6 +38,7 @@ class ResultActivity : BaseActivity<ActivityResultBinding>() {
     private lateinit var handleSaveResult: HandleSaveResult
     private lateinit var handleMediaVideo: HandleMediaVideo
     override fun initData() {
+
         dataRs = intent.getMediaOutput()
         handleSaveResult = HandleSaveResult(this@ResultActivity)
         handleMediaVideo = HandleMediaVideo(this@ResultActivity)
@@ -61,9 +53,7 @@ class ResultActivity : BaseActivity<ActivityResultBinding>() {
         )
         binding.apply {
             setUpAdapterRs()
-            showNativeAds(binding.container) {
-
-            }
+            showNativeAds(binding.container) {}
 
             bottomnavigation.setOnNavigationItemSelectedListener {
                 handleNavigationItemSelected(it)
@@ -89,22 +79,26 @@ class ResultActivity : BaseActivity<ActivityResultBinding>() {
 
 
     private fun showDialogReplace() {
-        ReplaceDialogFragment {
-            val uri = Uri.parse("package:${BuildConfig.APPLICATION_ID}")
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                if (Environment.isExternalStorageManager()) {
-                    handleReplace()
+        DialogUtils.showDialogReplace(this, object : DialogClickListener {
+            override fun onPositive() {
+                val uri = Uri.parse("package:${BuildConfig.APPLICATION_ID}")
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                    if (Environment.isExternalStorageManager()) {
+                        handleReplace()
+                    } else {
+                        val intent =
+                            Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION, uri)
+                        manageAllFilesAccessPermissionLauncher.launch(intent)
+                    }
                 } else {
-                    val intent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION, uri)
-                    manageAllFilesAccessPermissionLauncher.launch(intent)
+                    handleReplace()
                 }
-            } else {
-                handleReplace()
             }
-        }.show(
-            supportFragmentManager,
-            ReplaceDialogFragment::class.simpleName
-        )
+
+            override fun onNegative() {
+
+            }
+        })
     }
 
     private fun handleReplace() {
@@ -145,23 +139,32 @@ class ResultActivity : BaseActivity<ActivityResultBinding>() {
 
     private lateinit var adapter: ResultAdapter
     private fun setUpAdapterRs() {
-        adapter = ResultAdapter(this) { position, newName ->
+        val mediaOutput = intent.getMediaOutput()
+        val mediaInput = intent.getMediaInput()
+
+        adapter = ResultAdapter(
+            this,
+            if (intent.getActionMedia()!! != MediaAction.JoinVideo) 0L else mediaInput.sumOf { it.size }) { position, newName ->
             adapter.notifyItemChanged(position, adapter.submitData[position].apply {
                 second.name = newName + "." + second.mime
             })
         }
-        val mediaOutput = intent.getMediaOutput()
-        val mediaInput = intent.getMediaInput()
 
-        adapter.submitData = ArrayList(mediaInput.mapIndexed { index, mediaInfo ->
-            Pair(mediaInfo, mediaOutput[index])
+
+
+        adapter.submitData = ArrayList(mediaOutput.mapIndexed { index, mediaInfo ->
+            Pair(mediaInput[index], mediaInfo)
         }.toList())
 
-        adapter.submitData.forEachIndexed { index, pair ->
-            handleSaveResult.save(
-                pair.first.path,
-                pair.second.path,
+        if (intent.getActionMedia()!! != MediaAction.JoinVideo) {
+            adapter.submitData.forEachIndexed { index, pair ->
+                handleSaveResult.save(
+                    pair.first.path,
+                    pair.second.path,
                 )
+            }
+        } else {
+            binding.bottomnavigation.menu.findItem(R.id.replace).isVisible = false
         }
         binding.rcyRs.adapter = adapter
     }

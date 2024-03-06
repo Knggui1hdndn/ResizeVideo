@@ -25,8 +25,6 @@ class FolderPickerFragment :
         folderAdapter.submitData = handlerVideo.getFolderContainVideo()
     }
 
-
-
     override fun onResume() {
         super.onResume()
         if (handlerVideo.compareQuantity(size)) {
@@ -44,8 +42,8 @@ class FolderPickerFragment :
             }
 
             rcyFolder.adapter = folderAdapter
-            folderAdapter.setOnClickListener {
-                val videoFolder = MainPickerFragmentDirections.actionMainPickerFragmentToPickerFragment(it)
+            folderAdapter.setOnClickListener { folderInfo, position ->
+                val videoFolder = MainPickerFragmentDirections.actionMainPickerFragmentToPickerFragment(folderInfo)
                 findNavController().navigate(videoFolder)
             }
         }

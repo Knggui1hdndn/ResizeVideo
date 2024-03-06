@@ -1,12 +1,11 @@
 package com.tearas.resizevideo.ffmpeg
 
 import android.content.Context
-import android.util.Log
 import com.arthenica.ffmpegkit.FFprobeKit
 import com.tearas.resizevideo.model.MediaInfo
-
+import com.tearas.resizevideo.model.MediaInfos
+import com.tearas.resizevideo.model.OptionCompressType
 import com.tearas.resizevideo.model.OptionMedia
-import com.tearas.resizevideo.model.OptionCompress
 import com.tearas.resizevideo.model.Resolution
 import com.tearas.resizevideo.utils.ResolutionUtils.calculateResolution
 import com.tearas.resizevideo.utils.ResolutionUtils.calculateResolutionByRadio
@@ -23,7 +22,7 @@ class VideoCommandProcessor(
             .appendCommand("-y")
             .appendCommand("-i")
             .appendCommand(inputPath)
-//            .appendCommand("-c:v libx264")
+            .appendCommand("-c:v libx264")
             .appendCommand("-r 60")
             .appendCommand("-passlogfile")
             .appendCommand(logFilePath)
@@ -37,7 +36,7 @@ class VideoCommandProcessor(
             .appendCommand("/dev/null")
             .appendCommand("-y -i")
             .appendCommand(inputPath)
-//            .appendCommand("-c:v libx264")
+            .appendCommand("-c:v libx264")
             .appendCommand("-r 60")
             .appendCommand("-passlogfile")
             .appendCommand(logFilePath)
@@ -53,37 +52,38 @@ class VideoCommandProcessor(
     private fun compressVideoCommand(
         resolution: Resolution,
         inputPath: String,
-        option: OptionCompress,
+        option: OptionCompressType,
         fileSizeCompress: Long?,
         frameRate: Int,
-        bitrate: Long
+        bitrate: Long,
+        mime: String
     ): String {
         return when (option) {
-            is OptionCompress.CustomFileSize -> {
+            is OptionCompressType.CustomFileSize -> {
                 val originalDuration =
                     FFprobeKit.getMediaInformation(inputPath).mediaInformation.duration.toFloat()
                         .toLong()
-                val targetBitrate = (fileSizeCompress!! / originalDuration) - 128000
+                val targetBitrate = (fileSizeCompress!! / originalDuration) - 127000
                 val x = compressByFileSize(inputPath, targetBitrate)
-                 x
+                x
             }
 
-            is OptionCompress.Origin -> {
+            is OptionCompressType.Origin -> {
                 CommandConfiguration.getInstance()
                     .appendCommand("-i $inputPath")
                     .appendCommand("-preset medium")
-                    .appendCommand(getPathOutPut())
+                    .appendCommand(getPathOutPut(mime))
                     .getCommand()
             }
 
-            is OptionCompress.AdvanceOption -> {
+            is OptionCompressType.AdvanceTypeOption -> {
                 CommandConfiguration.getInstance()
                     .appendCommand("-i $inputPath")
                     .appendCommand("-s ${resolution.width}x${resolution.height}")
                     .appendCommand("-r $frameRate")
                     .appendCommand("-b:v ${bitrate}k")
                     .appendCommand("-preset medium")
-                    .appendCommand(getPathOutPut())
+                    .appendCommand(getPathOutPut(mime))
                     .getCommand()
             }
 
@@ -91,7 +91,7 @@ class VideoCommandProcessor(
                 CommandConfiguration.getInstance()
                     .appendCommand("-i $inputPath")
                     .appendCommand("-s ${resolution.width}x${resolution.height}")
-                    .appendCommand(getPathOutPut())
+                    .appendCommand(getPathOutPut(mime))
                     .getCommand()
             }
         }
@@ -109,7 +109,9 @@ class VideoCommandProcessor(
         resolution: Resolution,
         inputPath: String,
         startTime: Long,
-        endTime: Long
+        endTime: Long,
+        mime: String
+
     ): String {
         return CommandConfiguration.getInstance()
             .appendCommand("-i $inputPath")
@@ -117,7 +119,7 @@ class VideoCommandProcessor(
             .appendCommand("-ss ${Utils.formatTime(startTime * 1000)}")
             .appendCommand("-t ${Utils.formatTime((endTime - startTime) * 1000)}")
             .appendCommand("-c copy")
-            .appendCommand(getPathOutPut())
+            .appendCommand(getPathOutPut(mime))
             .getCommand()
 
     }
@@ -126,19 +128,19 @@ class VideoCommandProcessor(
         resolution: Resolution,
         inputPath: String,
         startTime: Long,
-        endTime: Long
+        endTime: Long,
+        mime: String
     ): String {
         return CommandConfiguration.getInstance()
             .appendCommand("-i $inputPath")
             .appendCommand("-s ${resolution.width}x${resolution.height}")
             .appendCommand("-vf  \"select='not(between(t,$startTime,$endTime))',  setpts=N/FRAME_RATE/TB\"")
             .appendCommand(" -af \"aselect='not(between(t,$startTime,$endTime))', asetpts=N/SR/TB\"")
-            .appendCommand(getPathOutPut())
+            .appendCommand(getPathOutPut(mime))
             .getCommand();
     }
 
     private fun extractAudioCommand(mime: String, inputPath: String): String {
-
         return CommandConfiguration.getInstance()
             .appendCommand("-i $inputPath")
             .appendCommand("-vn")
@@ -147,32 +149,80 @@ class VideoCommandProcessor(
     }
 
     //mp3 flac ogg
-    private fun fastForwardCommand(
+    private fun fastOrSlowVideoCommand(
         resolution: Resolution,
         withAudio: Boolean,
+        isFastVideo: Boolean,
         speed: Float,
-        inputPath: String
+        inputPath: String,
+        mime: String
     ): String {
         val commandProcessor = CommandConfiguration.getInstance()
+        val speedVideo = if (isFastVideo) 1.0 / speed else speed
+        val speedAudio = if (isFastVideo) speed else 1.0 / speed
+
         if (resolution.height % 2 != 0) resolution.height = resolution.height + 1
         commandProcessor
             .appendCommand("-i $inputPath")
             .appendCommand("-s ${resolution.width}x${resolution.height}")
+            .appendCommand("-c:v libx264")
+            .appendCommand("-preset medium")
             .appendCommand("-filter_complex")
         if (withAudio) {
-            commandProcessor.appendCommand("[0:v]setpts=${1.0 / speed}*PTS[v];[0:a]atempo=$speed[a]")
+            commandProcessor.appendCommand("[0:v]setpts=$speedVideo*PTS[v];[0:a]atempo=$speedAudio[a]")
                 .appendCommand("-map [v] -map [a]")
         } else {
-            commandProcessor.appendCommand("[0:v]setpts=${1.0 / speed}*PTS[v]")
+            commandProcessor.appendCommand("[0:v]setpts=$speedVideo*PTS[v]")
                 .appendCommand("-map [v]")
         }
-             .appendCommand(getPathOutPut())
+            .appendCommand(getPathOutPut(mime))
         return commandProcessor.getCommand()
 
     }
 
+    private fun MediaInfos.getResolutionMax() =
+        this.maxByOrNull { it.resolution!!.width * it.resolution!!.height }
+
+
+    private fun joinVideo(mediaInfos: MediaInfos): String {
+        val commandProcessor = CommandConfiguration.getInstance()
+        mediaInfos.forEach {
+            commandProcessor.appendCommand("-i")
+            commandProcessor.appendCommand(it.path)
+        }
+        var videoStream = ""
+        val resolutionMax = mediaInfos.getResolutionMax()
+        commandProcessor.appendCommandNotSpace("-filter_complex \"")
+        val resolution =
+            "${resolutionMax!!.resolution!!.width}:${resolutionMax.resolution!!.height}"
+
+        mediaInfos.forEachIndexed { index, _ ->
+            commandProcessor.appendCommandNotSpace("[$index:v]scale=$resolution:force_original_aspect_ratio=decrease,pad=$resolution:(ow-iw)/2:(oh-ih)/2,setsar=1[v$index];")
+            videoStream += "[v$index][$index:a:0]"
+        }
+        commandProcessor.appendCommand("${videoStream}concat=n=${mediaInfos.size}:v=1:a=1[v][a]\"")
+        commandProcessor.appendCommand("-map \"[v]\" -map \"[a]\"")
+        commandProcessor.appendCommand("-b:v ${resolutionMax.bitrate}")
+        commandProcessor.appendCommand("-vsync vfr")
+        commandProcessor.appendCommand(getPathOutPut())
+        return commandProcessor.getCommand()
+     }
+
+    private fun reverseVideo(pathVideo: String, mime: String): String {
+        return "-i $pathVideo -vf reverse -af areverse ${getPathOutPut(mime)}"
+    }
+
     fun createCommandList(optionMedia: OptionMedia): List<String> {
         var resolution: Resolution
+
+        if (optionMedia.mediaAction is MediaAction.JoinVideo) {
+
+            return listOf(
+                joinVideo(
+                    optionMedia.dataOriginal
+                )
+            )
+        }
         return optionMedia.dataOriginal.map { mediaItem ->
             resolution = calculateResolutionForCompressVideo(mediaItem, optionMedia)
 
@@ -180,10 +230,11 @@ class VideoCommandProcessor(
                 is MediaAction.CompressVideo -> compressVideoCommand(
                     resolution,
                     mediaItem.path,
-                    optionMedia.optionCompress!!,
+                    optionMedia.optionCompressType!!,
                     optionMedia.fileSize,
                     optionMedia.frameRate,
-                    optionMedia.bitrate
+                    optionMedia.bitrate,
+                    mediaItem.mime
                 )
 
                 is MediaAction.CutOrTrim.CutVideo -> {
@@ -191,7 +242,8 @@ class VideoCommandProcessor(
                         resolution,
                         mediaItem.path,
                         optionMedia.startTime,
-                        optionMedia.endTime
+                        optionMedia.endTime,
+                        mediaItem.mime
                     )
                 }
 
@@ -199,7 +251,8 @@ class VideoCommandProcessor(
                     resolution,
                     mediaItem.path,
                     optionMedia.startTime,
-                    optionMedia.endTime
+                    optionMedia.endTime,
+                    mediaItem.mime
                 )
 
                 is MediaAction.ExtractAudio -> extractAudioCommand(
@@ -207,11 +260,19 @@ class VideoCommandProcessor(
                     mediaItem.path
                 )
 
-                is MediaAction.FastForward -> fastForwardCommand(
+                is MediaAction.FastForward -> fastOrSlowVideoCommand(
                     resolution,
                     optionMedia.withAudio,
+                    optionMedia.isFastVideo,
                     optionMedia.speed,
-                    mediaItem.path
+                    mediaItem.path,
+                    mediaItem.mime
+                )
+
+
+                is MediaAction.ReveresVideo -> reverseVideo(
+                    optionMedia.dataOriginal[0].path,
+                    mediaItem.mime
                 )
 
                 else -> {
@@ -230,7 +291,7 @@ class VideoCommandProcessor(
 
         // Kiểm tra điều kiện và tính toán resolution mới dựa trên action và option
         if ((optionMedia.mediaAction is MediaAction.CompressVideo &&
-                    optionMedia.optionCompress != OptionCompress.CustomFileSize) ||
+                    optionMedia.optionCompressType != OptionCompressType.CustomFileSize) ||
             optionMedia.mediaAction is MediaAction.CutOrTrim.CutVideo ||
             optionMedia.mediaAction is MediaAction.CutOrTrim.TrimVideo ||
             optionMedia.mediaAction is MediaAction.FastForward
@@ -238,17 +299,19 @@ class VideoCommandProcessor(
         ) {
             val originalResolution = mediaItem.resolution!!
             resolution = if (
-                optionMedia.optionCompress == OptionCompress.Custom
+                optionMedia.optionCompressType == OptionCompressType.Custom
             ) {
                 originalResolution.calculateResolutionByRadio(
                     originalResolution.getRatio(), optionMedia.newResolution.width, null
                 )
             } else {
-                originalResolution.calculateResolution(optionMedia.optionCompress!!)
+                originalResolution.calculateResolution(optionMedia.optionCompressType!!)
             }
         }
         return resolution
     }
+     fun getDurations(){
 
+     }
 }
 

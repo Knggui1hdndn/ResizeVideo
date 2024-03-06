@@ -1,25 +1,24 @@
 package com.tearas.resizevideo.utils
 
-import android.util.Log
-import com.tearas.resizevideo.model.OptionCompress
+import com.tearas.resizevideo.model.OptionCompressType
 import com.tearas.resizevideo.model.Resolution
 
 object ResolutionUtils {
-    fun Resolution.calculateResolution(size: OptionCompress): Resolution {
+    fun Resolution.calculateResolution(size: OptionCompressType): Resolution {
         val resolution = when (size) {
-            OptionCompress.Small -> this.copy(
+            OptionCompressType.Small -> this.copy(
                 width = width - (width * 1 / 2), height = height - (height * 1 / 2)
             )
 
-            OptionCompress.Medium -> this.copy(
+            OptionCompressType.Medium -> this.copy(
                 width = width - (width * 1 / 3), height = height - (height * 1 / 3)
             )
 
-            OptionCompress.Large -> this.copy(
+            OptionCompressType.Large -> this.copy(
                 width = width - (width * 1 / 4), height = height - (height * 1 / 4)
             )
 
-            OptionCompress.Origin -> this
+            OptionCompressType.Origin -> this
 
             else -> this
         }

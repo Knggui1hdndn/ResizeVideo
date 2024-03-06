@@ -1,6 +1,7 @@
 buildscript {
     repositories {
         google()
+        mavenCentral()
     }
     dependencies {
         val nav_version = "2.5.3"
@@ -17,3 +18,4 @@ plugins {
     id("com.android.library") version "7.4.1" apply false
 
 }
+

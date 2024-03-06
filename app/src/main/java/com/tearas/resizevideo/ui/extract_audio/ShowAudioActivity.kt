@@ -4,8 +4,7 @@ import android.content.Intent
 import android.os.Handler
 import android.os.Looper
 import android.view.MenuItem
-import com.arthenica.ffmpegkit.Log
-import com.tearas.resizevideo.MainActivity
+import com.tearas.resizevideo.ui.main.MainActivity
 import com.tearas.resizevideo.R
 import com.tearas.resizevideo.core.BaseActivity
 import com.tearas.resizevideo.databinding.AcitivityShowAudioBinding

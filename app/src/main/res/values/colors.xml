@@ -2,9 +2,9 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="maintream">#004cdf</color>
+    <color name="maintream">#fff1df</color>
     <color name="maintream1">#57000207</color>
- 
+
     <color name="bg_btn_speed">#e9effb</color>
     <color name="bg_fast_options">#e7e7e7</color>
     <color name="bg_view_fast_options">#f2f5fc</color>
@@ -15,4 +15,25 @@
     <color name="bg_dark_screen_2">#1c1b20</color>
 
 
+
+    <color name="bg_home_click">#ffcf92</color>
+    <color name="bg_home_unclick">#ffe8ca</color>
+    <color name="text_home_click">#FF000000</color>
+    <color name="text_home_unclick">#e1af6e</color>
+    <color name="bg_compress_video">#ffdcc3</color>
+    <color name="bg_video_cutter">#e1f4ef</color>
+    <color name="bg_join_video">#fee6e2</color>
+    <color name="bg_fast_forward">#ffe3e9</color>
+    <color name="bg_reveres_video">#dae4ef</color>
+    <color name="bg_slow_video">#ffdccd</color>
+    <color name="bg_extract_audio">#ebf9d1</color>
+
+    <color name="bg_ic_video_cutter">#abe4f0</color>
+    <color name="bg_ic_join_video">#fcb4cb</color>
+    <color name="bg_ic_fast_forward">#f2b1df</color>
+    <color name="bg_ic_reveres_video">#b0deff</color>
+    <color name="bg_ic_slow_video">#f8bab4</color>
+    <color name="bg_ic_extract_audio">#c9f6be</color>
+
+    <color name="bg_item_video">#efd7b7</color>
 </resources>

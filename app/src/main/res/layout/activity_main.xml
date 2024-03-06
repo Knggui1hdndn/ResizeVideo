@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:layout_gravity="start"
     android:fitsSystemWindows="true"
-    tools:context=".MainActivity"
+    tools:context=".ui.main.MainActivity"
     tools:openDrawer="start">
 
     <androidx.appcompat.widget.LinearLayoutCompat
@@ -22,168 +22,87 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
-            android:background="@color/maintream"
-            app:title="Reduce video size"
-            app:titleTextColor="@color/white" />
+            app:title=""
+            app:titleTextColor="@color/black">
 
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="5dp">
-
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_width="match_parent"
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:weightSum="10">
+                android:fontFamily="@font/lato_medium"
+                android:text="Welcome "
+                android:textColor="@color/black"
+                android:textSize="28sp"
+                android:textStyle="bold|italic" />
 
-                <LinearLayout
-                    android:id="@+id/compressVideo"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:layout_weight="5"
-                    android:background="@drawable/corners_troke"
-                    android:foreground="?attr/selectableItemBackground"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="5dp">
-
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:layout_width="50dp"
-                        android:layout_height="100dp"
-                        android:src="@drawable/compress"
-                        android:tint="@color/maintream" />
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        style="@style/textMain"
-                        android:text="Compress Video"
-                        tools:ignore="HardcodedText" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/cut_compress"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:layout_weight="5"
-                    android:background="@drawable/corners_troke"
-                    android:foreground="?attr/selectableItemBackground"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="5dp">
-
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:layout_width="50dp"
-                        android:layout_height="100dp"
-                        android:src="@drawable/cut"
-                        android:tint="@color/maintream" />
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        style="@style/textMain"
-                        android:text="Cut + Compress"
-                        tools:ignore="HardcodedText" />
-                </LinearLayout>
-            </androidx.appcompat.widget.LinearLayoutCompat>
-
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_width="match_parent"
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:weightSum="10">
+                android:layout_gravity="end"
+                android:layout_marginEnd="15dp"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="0dp">
 
-                <LinearLayout
-                    android:id="@+id/fast_forward"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:layout_weight="5"
-                    android:background="@drawable/corners_troke"
-                    android:foreground="?attr/selectableItemBackground"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="5dp">
-
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:layout_width="50dp"
-                        android:layout_height="100dp"
-                        android:src="@drawable/flash"
-                        android:tint="@color/maintream" />
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        style="@style/textMain"
-                        android:text="Fast Forward"
-                        tools:ignore="HardcodedText" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/extract_audio"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:layout_weight="5"
-                    android:background="@drawable/corners_troke"
-                    android:foreground="?attr/selectableItemBackground"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="5dp">
-
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:layout_width="50dp"
-                        android:layout_height="100dp"
-                        android:src="@drawable/audio"
-                        android:tint="@color/maintream" />
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        style="@style/textMain"
-                        android:text="Extract Audio"
-                        tools:ignore="HardcodedText" />
-                </LinearLayout>
-            </androidx.appcompat.widget.LinearLayoutCompat>
-
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp">
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/compressed"
-                    style="@style/CustomStroke"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="start|center"
-                    android:padding="15sp"
-                    android:paddingStart="20dp"
-                    android:text="@string/compressed_videos"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    app:backgroundTint="@android:color/transparent"
-                    app:icon="@drawable/folder"
-                    app:iconPadding="15sp"
-                    app:iconSize="40dp"
-                    app:iconTint="@color/maintream"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/appCompatImageView2"
+                <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="15sp"
-                    android:src="@drawable/ic_arrow_24"
-                    android:tint="@color/maintream"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.appcompat.widget.LinearLayoutCompat>
+                    android:layout_gravity="center_vertical"
+                    android:background="#e3d6c3"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="5dp">
 
-        <FrameLayout
-            android:id="@+id/container"
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/icon_premium" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:text="Premium"
+                        android:textColor="@color/black"
+                        android:textStyle="bold" />
+                </androidx.appcompat.widget.LinearLayoutCompat>
+            </androidx.cardview.widget.CardView>
+        </androidx.appcompat.widget.Toolbar>
+
+        <View
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="0.5dp"
+            android:background="@color/gray" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <com.tearas.resizevideo.ui.CustomTab
+                android:id="@+id/mTab"
+                android:layout_width="match_parent"
+                android:layout_marginTop="15dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/viewPager"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginBottom="55dp"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/mTab" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 

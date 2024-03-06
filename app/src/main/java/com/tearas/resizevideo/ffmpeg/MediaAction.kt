@@ -14,4 +14,6 @@ sealed class MediaAction(val action: String) : Serializable {
 
     data object FastForward : MediaAction("Fast Forward")
     data object ExtractAudio : MediaAction("Extract Audio")
+    data object ReveresVideo : MediaAction("Reveres Video")
+    data object JoinVideo : MediaAction("Join Video")
 }

@@ -6,24 +6,23 @@ import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Looper
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.view.animation.AnimationUtils
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
 import com.arthenica.ffmpegkit.FFprobeKit
 import com.google.android.material.button.MaterialButton
 import com.jaygoo.widget.OnRangeChangedListener
 import com.jaygoo.widget.RangeSeekBar
-import com.tearas.resizevideo.MainActivity
+import com.tearas.resizevideo.ui.main.MainActivity
 import com.tearas.resizevideo.core.BaseActivity
 import com.tearas.resizevideo.R
 import com.tearas.resizevideo.databinding.ActivityCutTrimBinding
 import com.tearas.resizevideo.ffmpeg.MediaAction
 import com.tearas.resizevideo.model.OptionMedia
 import com.tearas.resizevideo.ui.select_compress.SelectCompressActivity
+import com.tearas.resizevideo.utils.IntentUtils.getActionMedia
 import com.tearas.resizevideo.utils.IntentUtils.getOptionMedia
+import com.tearas.resizevideo.utils.IntentUtils.passActionMedia
 import com.tearas.resizevideo.utils.IntentUtils.passOptionMedia
 import com.tearas.resizevideo.utils.Utils
 import com.tearas.resizevideo.utils.Utils.isDarkMode
@@ -89,6 +88,7 @@ class CutTrimActivity : BaseActivity<ActivityCutTrimBinding>() {
             android.os.Handler(Looper.getMainLooper()).postDelayed({
                 val intent = Intent(this, SelectCompressActivity::class.java)
                 intent.passOptionMedia(createOptionMedia())
+                intent.passActionMedia(this@CutTrimActivity.intent.getActionMedia()!!)
                 startActivity(intent)
                 binding.progressBar.visibility = View.GONE
             }, 1000)
@@ -123,7 +123,7 @@ class CutTrimActivity : BaseActivity<ActivityCutTrimBinding>() {
                 handler.postDelayed(runnable1, (right - left).toLong())
             } else {
                 val duration =
-                    FFprobeKit.getMediaInformation(path).duration.toFloat().toLong() * 1000
+                    FFprobeKit.getMediaInformation(path).mediaInformation.duration.toFloat().toLong() * 1000
                 var firstPartStartTime = 0L
                 var firstPartEndTime = 0L
                 var secondPartStartTime = 0L
@@ -248,7 +248,7 @@ class CutTrimActivity : BaseActivity<ActivityCutTrimBinding>() {
 
         binding.includeCutTrim.apply {
             setUnEnabled(rangeBottom, rangeTop, rangeTime)
-            right = FFprobeKit.getMediaInformation(path).duration.toFloat() * 1000
+            right = FFprobeKit.getMediaInformation(path).mediaInformation.duration.toFloat() * 1000
             setDefaultProgress(right)
             setUpUITrimVideo()
 

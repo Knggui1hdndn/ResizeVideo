@@ -1,12 +1,11 @@
 package com.tearas.resizevideo.model
 
-import android.health.connect.datatypes.DataOrigin
 import com.tearas.resizevideo.ffmpeg.MediaAction
 import java.io.Serializable
 
 data class OptionMedia(
     val dataOriginal: MediaInfos,
-    var optionCompress: OptionCompress? = null,
+    var optionCompressType: OptionCompressType? = null,
     var bitrate: Long = 0,
     var frameRate: Int = 0,
     val fileSize: Long = 0,//Kbps
@@ -17,6 +16,7 @@ data class OptionMedia(
     var endTime: Long = 0,
     var speed: Float = 1.0f,
     var withAudio: Boolean = true,
+    var isFastVideo: Boolean = true,
     val isPickMultiple: Boolean = dataOriginal.size > 0,
 ) : Serializable {
     override fun toString(): String {

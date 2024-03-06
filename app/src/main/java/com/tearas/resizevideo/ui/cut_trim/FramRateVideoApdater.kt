@@ -4,8 +4,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.bumptech.glide.Glide
-import com.knd.duantotnghiep.testsocket.core.BaseAdapter
+import com.tearas.resizevideo.core.BaseAdapter
 import com.tearas.resizevideo.databinding.ItemFramRateBinding
 
 class FramRateVideoApdater(private val context: Context) :

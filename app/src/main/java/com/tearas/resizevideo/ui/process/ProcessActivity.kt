@@ -4,27 +4,26 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.util.Log
 import android.view.MenuItem
-import android.window.OnBackInvokedDispatcher
-import androidx.activity.OnBackPressedDispatcher
 import com.arthenica.ffmpegkit.FFmpegKit
-import com.tearas.resizevideo.MainActivity
 import com.tearas.resizevideo.core.BaseActivity
+import com.tearas.resizevideo.core.DialogClickListener
 import com.tearas.resizevideo.databinding.ActivityProcessBinding
 import com.tearas.resizevideo.ffmpeg.IProcessFFmpeg
 import com.tearas.resizevideo.ffmpeg.VideoCommandProcessor
 import com.tearas.resizevideo.ffmpeg.VideoProcess
 import com.tearas.resizevideo.model.MediaInfo
-import com.tearas.resizevideo.model.OptionCompress
+import com.tearas.resizevideo.model.OptionCompressType
 import com.tearas.resizevideo.model.OptionMedia
 import com.tearas.resizevideo.ui.error.ShowErrorActivity
 import com.tearas.resizevideo.ui.result.ResultActivity
+import com.tearas.resizevideo.utils.DialogUtils
 import com.tearas.resizevideo.utils.HandleMediaVideo
+import com.tearas.resizevideo.utils.IntentUtils.getActionMedia
 import com.tearas.resizevideo.utils.IntentUtils.getOptionMedia
+import com.tearas.resizevideo.utils.IntentUtils.passActionMedia
 import com.tearas.resizevideo.utils.IntentUtils.passMediaInput
 import com.tearas.resizevideo.utils.IntentUtils.passMediaOutput
 import com.tearas.resizevideo.utils.Utils.startToMainActivity
-import java.io.File
-import java.io.FileInputStream
 
 class ProcessActivity : BaseActivity<ActivityProcessBinding>(), IProcessFFmpeg {
 
@@ -36,12 +35,19 @@ class ProcessActivity : BaseActivity<ActivityProcessBinding>(), IProcessFFmpeg {
     }
 
     private fun showBackDialog() {
-        BackDialogFragment {
-            startToMainActivity()
-            FFmpegKit.cancel()
-        }.show(supportFragmentManager, BackDialogFragment::class.simpleName)
+        DialogUtils.showDialogBack(this, object : DialogClickListener {
+            override fun onPositive() {
+                startToMainActivity()
+                FFmpegKit.cancel()
+            }
+
+            override fun onNegative() {
+
+            }
+        })
     }
 
+    private lateinit var listInput: List<String>
     override fun initData() {
         optionMedia = intent.getOptionMedia()!!
         val handle = HandleMediaVideo(this)
@@ -50,11 +56,14 @@ class ProcessActivity : BaseActivity<ActivityProcessBinding>(), IProcessFFmpeg {
             handle.getPathVideoCacheFolder(),
             handle.getPathVideoCacheFolder()
         )
-        val listInput = videoCommandProcessor.createCommandList(optionMedia)
-        if (optionMedia.optionCompress is OptionCompress.CustomFileSize) {
-            VideoProcess.Builder(this).twoCompressAsync(listInput, this)
+        listInput = videoCommandProcessor.createCommandList(optionMedia)
+
+        if (optionMedia.optionCompressType is OptionCompressType.CustomFileSize) {
+            VideoProcess.Builder(this, optionMedia)
+                .twoCompressAsync(listInput, this)
         } else {
-            VideoProcess.Builder(this).compressAsync(listInput, this)
+            VideoProcess.Builder(this, optionMedia)
+                .compressAsync(listInput, this)
         }
     }
 
@@ -85,9 +94,9 @@ class ProcessActivity : BaseActivity<ActivityProcessBinding>(), IProcessFFmpeg {
     override fun processElement(currentElement: Int, percentage: Int) {
         runOnUiThread {
             binding.apply {
-                position.text = "${currentElement + 1}/${optionMedia.dataOriginal.size}"
+                position.text = "${currentElement + 1}/${listInput.size}"
                 percent.text = "$percentage%"
-                progressBar.progress = percentage
+                progressBar.setProgress(percentage, true)
             }
         }
     }
@@ -107,6 +116,7 @@ class ProcessActivity : BaseActivity<ActivityProcessBinding>(), IProcessFFmpeg {
         val intent = Intent(this, ResultActivity::class.java)
         intent.passMediaOutput(mediaInfoResults)
         intent.passMediaInput(this.intent.getOptionMedia()!!.dataOriginal)
+        intent.passActionMedia(this.intent.getActionMedia()!!)
         startActivity(intent)
         finish()
     }

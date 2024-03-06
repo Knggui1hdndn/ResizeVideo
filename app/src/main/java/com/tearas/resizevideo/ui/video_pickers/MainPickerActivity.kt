@@ -17,8 +17,10 @@ import com.tearas.resizevideo.model.OptionMedia
 import com.tearas.resizevideo.ui.cut_trim.CutTrimActivity
 import com.tearas.resizevideo.ui.extract_audio.ExtractAudioActivity
 import com.tearas.resizevideo.ui.fast_forward.FastForwardActivity
+import com.tearas.resizevideo.ui.process.ProcessActivity
 import com.tearas.resizevideo.ui.select_compress.SelectCompressActivity
 import com.tearas.resizevideo.utils.IntentUtils.getActionMedia
+import com.tearas.resizevideo.utils.IntentUtils.passActionMedia
 import com.tearas.resizevideo.utils.IntentUtils.passOptionMedia
 
 
@@ -55,10 +57,11 @@ class MainPickerActivity : BaseActivity<ActivityMainPickerBinding>() {
                         is MediaAction.CutOrTrim -> CutTrimActivity::class.java
                         is MediaAction.ExtractAudio -> ExtractAudioActivity::class.java
                         is MediaAction.FastForward -> FastForwardActivity::class.java
-                        else -> SelectCompressActivity::class.java
+                        else -> ProcessActivity::class.java
                     }
                     val intent = Intent(this@MainPickerActivity, destination)
                     intent.passOptionMedia(createOptionMedia())
+                    intent.passActionMedia(this@MainPickerActivity.intent.getActionMedia()!!)
                     startActivity(intent)
                 }
             }
@@ -82,8 +85,8 @@ class MainPickerActivity : BaseActivity<ActivityMainPickerBinding>() {
             } else {
                 View.VISIBLE
             }
-            binding.size.text = Formatter.formatFileSize(this, viewModel.sumSizeVideos)
-            binding.count.text = "$sizeListVideos selected"
+
+            binding.count.text = "$sizeListVideos Selected (${Formatter.formatFileSize(this, viewModel.sumSizeVideos)})"
         }
     }
 

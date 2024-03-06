@@ -73,7 +73,7 @@ class HandleMediaVideo(private val context: Context) : IVideo {
     }
 
     fun saveFileToExternalStorage(
-        context: Context, isVideo: Boolean, inputStream: InputStream, fileName: String
+        context: Context, isVideo: Boolean, inputStream: FileInputStream, fileName: String
     ): File? {
         val folder = File(
             if (isVideo) getPathExternalFolderVideo()
@@ -85,16 +85,18 @@ class HandleMediaVideo(private val context: Context) : IVideo {
                 Toast.makeText(context, "File exists", Toast.LENGTH_SHORT).show()
                 return fileSave
             }
-            val outputStream = FileOutputStream(fileSave)
-            val buffer = ByteArray(1024)
-            var bytesRead: Int = 0
-            while (inputStream.read(buffer).also { bytesRead = it } != -1) {
-                outputStream.write(buffer, 0, bytesRead)
+//            val outputStream = FileOutputStream(fileSave)
+//            val buffer = ByteArray(1024)
+//            var bytesRead: Int = 0
+//            while (inputStream.read(buffer).also { bytesRead = it } != -1) {
+//                outputStream.write(buffer, 0, bytesRead)
+//            }
+            inputStream.use { input ->
+                fileSave.outputStream().use { output ->
+                    input.copyTo(output)
+                }
             }
-
             inputStream.close()
-            outputStream.close()
-
             Toast.makeText(context, "Save Successfully", Toast.LENGTH_SHORT).show()
             return fileSave
         } catch (e: Exception) {
@@ -236,7 +238,7 @@ class HandleMediaVideo(private val context: Context) : IVideo {
     }
 
     override fun getAudioSave(): ArrayList<MediaInfo> {
-        val cacheDir = File(getPathExternalFolderAudio() )
+        val cacheDir = File(getPathExternalFolderAudio())
         val videos = ArrayList<MediaInfo>()
         cacheDir.listFiles()?.forEachIndexed { index, file ->
             try {

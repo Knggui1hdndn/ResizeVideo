@@ -13,8 +13,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/maintream"
-        app:title="Fast Forward Options"
-        app:titleTextColor="@color/white" />
+        app:title="Fast Forward Options" app:titleTextColor="@color/black"
+  />
 
     <androidx.cardview.widget.CardView
         style="@style/CustomBgVAudioOptions"
@@ -159,7 +159,7 @@
                     android:id="@+id/rdi2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/label_smail_size"
+                    android:text="@string/smail_size"
                     android:textStyle="bold"
                     app:buttonTint="@color/maintream" />
 
@@ -168,7 +168,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checked="true"
-                    android:text="@string/label_medium"
+                    android:text="@string/medium_size"
 
                     android:textStyle="bold"
                     app:buttonTint="@color/maintream" />
@@ -177,8 +177,7 @@
                     android:id="@+id/rdi4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/label_medium"
-
+                    android:text="@string/large_size"
                     android:textStyle="bold"
                     app:buttonTint="@color/maintream" />
 

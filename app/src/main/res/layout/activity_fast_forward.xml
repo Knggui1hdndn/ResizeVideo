@@ -16,15 +16,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:navigationIcon="@drawable/baseline_arrow_back_24"
-        app:title="Fast Forward"
-        app:titleTextColor="@color/white" />
+        app:navigationIcon="@drawable/baseline_arrow_back_24" app:titleTextColor="@color/black"
+        app:title="Speed Adjustment" >
+
+
+    </androidx.appcompat.widget.Toolbar>
 
     <FrameLayout
         android:id="@+id/frameLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginBottom="30dp"
         android:paddingStart="25sp"
         android:paddingEnd="25sp"
         app:layout_constraintBottom_toTopOf="@+id/radioGroup2"
@@ -45,6 +46,7 @@
             android:src="@drawable/icon_play"
             android:visibility="gone"
             app:tint="@color/black" />
+
     </FrameLayout>
 
 
@@ -65,128 +67,170 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
         android:gravity="center"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/cardView5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <androidx.cardview.widget.CardView
+        <RadioGroup
+            android:id="@+id/radioGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            app:cardCornerRadius="25dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@+id/radioGroup2"
+            app:layout_constraintStart_toStartOf="parent">
 
-            app:cardElevation="0dp">
 
-            <TextView
-                android:id="@+id/txt1x"
-                style="@style/StyleSpeed"
+            <RadioButton
+                android:id="@+id/rdi3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:foreground="?attr/selectableItemBackground"
-                android:gravity="center"
-                android:text="1x"
-                android:textStyle="bold" />
-        </androidx.cardview.widget.CardView>
+                android:checked="true"
+                android:text="Fast"
 
-        <androidx.cardview.widget.CardView
-            android:layout_width="wrap_content"
+                android:textStyle="bold"
+                app:buttonTint="@color/maintream" />
+
+            <RadioButton
+                android:id="@+id/rdi4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Slow"
+                android:textStyle="bold"
+                app:buttonTint="@color/maintream" />
+
+        </RadioGroup>
+
+        <RadioGroup
+            android:id="@+id/radioGroup3"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            app:cardCornerRadius="25dp"
+            android:layout_marginBottom="10dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/cardView5"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
 
-            app:cardElevation="0dp">
-
-            <TextView
-                android:id="@+id/txt1_25x"
-                style="@style/StyleSpeed"
+            <androidx.cardview.widget.CardView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                app:cardCornerRadius="25dp"
 
-                android:foreground="?attr/selectableItemBackground"
-                android:gravity="center"
-                android:text="1.25x"
-                android:textStyle="bold" />
-        </androidx.cardview.widget.CardView>
+                app:cardElevation="0dp">
 
-        <androidx.cardview.widget.CardView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            app:cardCornerRadius="25dp"
+                <TextView
+                    android:id="@+id/txt1x"
+                    style="@style/StyleSpeed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:gravity="center"
+                    android:text="1x"
+                    android:textStyle="bold" />
+            </androidx.cardview.widget.CardView>
 
-            app:cardElevation="0dp">
-
-            <TextView
-                android:id="@+id/txt1_5x"
-                style="@style/StyleSpeed"
+            <androidx.cardview.widget.CardView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                app:cardCornerRadius="25dp"
 
-                android:foreground="?attr/selectableItemBackground"
-                android:gravity="center"
-                android:text="1.5x"
-                android:textStyle="bold" />
-        </androidx.cardview.widget.CardView>
+                app:cardElevation="0dp">
 
-        <androidx.cardview.widget.CardView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            app:cardCornerRadius="25dp"
+                <TextView
+                    android:id="@+id/txt1_25x"
+                    style="@style/StyleSpeed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
 
-            app:cardElevation="0dp">
+                    android:foreground="?attr/selectableItemBackground"
+                    android:gravity="center"
+                    android:text="1.25x"
+                    android:textStyle="bold" />
+            </androidx.cardview.widget.CardView>
 
-            <TextView
-                android:id="@+id/txt2x"
-                style="@style/StyleSpeed"
+            <androidx.cardview.widget.CardView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                app:cardCornerRadius="25dp"
 
-                android:foreground="?attr/selectableItemBackground"
-                android:gravity="center"
-                android:text="2x"
-                android:textStyle="bold" />
-        </androidx.cardview.widget.CardView>
+                app:cardElevation="0dp">
 
-        <androidx.cardview.widget.CardView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            app:cardCornerRadius="25dp"
-            app:cardElevation="0dp">
+                <TextView
+                    android:id="@+id/txt1_5x"
+                    style="@style/StyleSpeed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
 
-            <TextView
-                android:id="@+id/txt2_5x"
-                style="@style/StyleSpeed"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:gravity="center"
+                    android:text="1.5x"
+                    android:textStyle="bold" />
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                app:cardCornerRadius="25dp"
 
-                android:foreground="?attr/selectableItemBackground"
-                android:gravity="center"
-                android:text="2.5x"
-                android:textStyle="bold" />
-        </androidx.cardview.widget.CardView>
+                app:cardElevation="0dp">
 
-        <androidx.cardview.widget.CardView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            app:cardCornerRadius="25dp"
-            app:cardElevation="0dp">
+                <TextView
+                    android:id="@+id/txt2x"
+                    style="@style/StyleSpeed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
 
-            <TextView
-                android:id="@+id/txt3x"
-                style="@style/StyleSpeed"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:gravity="center"
+                    android:text="2x"
+                    android:textStyle="bold" />
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                app:cardCornerRadius="25dp"
+                app:cardElevation="0dp">
 
-                android:foreground="?attr/selectableItemBackground"
-                android:gravity="center"
-                android:text="3x"
-                android:textStyle="bold" />
-        </androidx.cardview.widget.CardView>
+                <TextView
+                    android:id="@+id/txt2_5x"
+                    style="@style/StyleSpeed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:foreground="?attr/selectableItemBackground"
+                    android:gravity="center"
+                    android:text="2.5x"
+                    android:textStyle="bold" />
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                app:cardCornerRadius="25dp"
+                app:cardElevation="0dp">
+
+                <TextView
+                    android:id="@+id/txt3x"
+                    style="@style/StyleSpeed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:foreground="?attr/selectableItemBackground"
+                    android:gravity="center"
+                    android:text="3x"
+                    android:textStyle="bold" />
+            </androidx.cardview.widget.CardView>
+        </RadioGroup>
 
 
     </RadioGroup>

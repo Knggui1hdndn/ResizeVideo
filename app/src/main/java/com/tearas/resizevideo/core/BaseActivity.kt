@@ -20,7 +20,9 @@ import com.android.billingclient.api.BillingResult
 import com.android.billingclient.api.PurchasesUpdatedListener
 import com.android.billingclient.api.QueryPurchasesParams
 import com.android.billingclient.api.queryPurchasesAsync
+import com.google.android.gms.ads.OnUserEarnedRewardListener
 import com.google.android.gms.ads.nativead.NativeAd
+import com.google.android.gms.ads.rewarded.RewardedAd
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
@@ -88,23 +90,26 @@ abstract class BaseActivity<VB : ViewBinding> : BaseActivity() {
                     call(hasAds)
                 }
             })
-        }else{
+        } else {
             call(true)
         }
     }
 
-    open fun showNativeAds(viewContainer: ViewGroup, call: () -> Unit) {
+    open fun showNativeAds(viewContainer: ViewGroup, call: (() -> Unit)? = null) {
 //        if (!proApplication.isSubVip) {
-            nativeRender.prepareNative()
-            nativeRender.loadNativeAds(object : OnShowNativeListener {
-                override fun onLoadDone(hasAds: Boolean, currentNativeAd: NativeAd?) {
-                    // load dc native
+        nativeRender.prepareNative()
+        nativeRender.loadNativeAds(object : OnShowNativeListener {
+            override fun onLoadDone(hasAds: Boolean, currentNativeAd: NativeAd?) {
+                // load dc native
+                if (call != null) {
                     call()
                 }
+            }
 
-            }, viewContainer)
+        }, viewContainer)
 //        }
     }
+
     fun getConfigData(isSplash: Boolean) {
         var delayTime = if (isSplash) {
             1000L
@@ -141,6 +146,7 @@ abstract class BaseActivity<VB : ViewBinding> : BaseActivity() {
         }, delayTime)
         //  }
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = getViewBinding()

@@ -5,13 +5,13 @@
     <uses-permission
         android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
-    <uses-permission android:name="com.google.android.gms.permission.AD_ID" />
+
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
     <uses-permission android:name="android.permission.INTERNET" />
-
+    <uses-permission android:name="com.google.android.gms.permission.AD_ID" />
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
@@ -25,6 +25,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ResizeVideo"
         tools:targetApi="31">
+        <activity
+            android:name=".ui.sup_vip.SubVipActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.intro.IntroActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.setting.SettingActivity"
             android:exported="false" />
@@ -66,7 +72,7 @@
             android:value="true" />
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-3940256099942544~3347511713" />
+            android:value="ca-app-pub-9674055550946724~3799247237" />
 
         <activity
             android:name=".ui.fast_forward.FastForwardActivity"
@@ -96,11 +102,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".ui.video_pickers.MainPickerActivity"
             android:exported="false" />
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".ui.main.MainActivity" />
     </application>
 
 </manifest>

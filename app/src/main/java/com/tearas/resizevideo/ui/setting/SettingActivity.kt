@@ -1,10 +1,8 @@
 package com.tearas.resizevideo.ui.setting
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
 import android.view.MenuItem
-import com.tearas.resizevideo.MainActivity
+import com.tearas.resizevideo.ui.main.MainActivity
 import com.tearas.resizevideo.R
 import com.tearas.resizevideo.core.BaseActivity
 import com.tearas.resizevideo.databinding.ActivitySettingBinding

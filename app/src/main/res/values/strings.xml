@@ -16,22 +16,32 @@
     <string name="duration">Duration</string>
     <string name="descending">Descending</string>
     <string name="ascending">Ascending</string>
-    <string name="label_smail_size">Smail Size</string>
-    <string name="label_medium">Medium Size</string>
-    <string name="label_large">Large Size</string>
-    <string name="label_best">Best Quality</string>
-    <string name="label_custom_resolution">Custom Resolution</string>
 
-    <string name="description_smail_size">Acceptable quality</string>
-    <string name="description_medium">Good quality</string>
-    <string name="description_large">Better quality</string>
-    <string name="description_best">Best quality</string>
-    <string name="description_custom_resolution">Select resolution for the video</string>
+    <string-array name="list_title_options">
+        <item>Smail Size</item>
+        <item>Medium Size</item>
+        <item>Large Size</item>
+        <item>Best Quality</item>
+        <item>Custom Resolution</item>
+        <item>Custom File Size</item>
+        <item>Advanced Compression</item>
+    </string-array>
+
+    <string-array name="list_description_options">
+        <item>Acceptable quality - low resolution</item>
+        <item>Good quality - medium resolution</item>
+        <item>Better quality - large resolution</item>
+        <item>Best quality - original resolution</item>
+        <item>Select resolution for the video</item>
+        <item>Optimize resolution and quantity based on file size</item>
+        <item>Select resolution, bitrate and frame rate</item>
+    </string-array>
+
+
     <string name="compress">Compress</string>
     <string name="chose_resolution">Chose Resolution</string>
     <string name="save">Save</string>
     <string name="dismiss">Dismiss</string>
-    <string name="custom_resolutions">Custom Resolutions</string>
     <string name="custom_value">Custom Value</string>
     <string name="aspect_ratio">Aspect ratio</string>
     <string name="update_to_premium">Update to premium</string>
@@ -50,11 +60,8 @@
     <string name="saved_videos">Saved Videos</string>
     <string name="compressed_videos">Compressed Videos</string>
     <string name="with_audio">With Audio</string>
-    <string name="custom_file_size">Custom File Size</string>
-    <string name="label_custom_file_size">Custom File Size</string>
-    <string name="description_custom_file_size">Optimize resolution and quantity based on file size</string>
-    <string name="advanced_compression">Advanced Compression</string>
-    <string name="select_resolution_bitrate_and_frame_rate">Select resolution, bitrate and frame rate</string>
+
+
     <string name="play">Play</string>
     <string name="compare_with_original">Compare With Original</string>
     <string name="delete">Delete</string>
@@ -70,12 +77,30 @@
     <string name="something_went_wrong_please_try_again">Something went wrong please try again</string>
     <string name="language">Language</string>
     <string name="english">English</string>
+    <string name="custom">Custom</string>
+    <string name="custom_resolution">Custom resolution</string>
 
-    <string-array name="list_size" translatable="true">
-        <item>low resolution</item>
-        <item>medium resolution</item>
-        <item>large resolution</item>
-        <item>original resolution</item>
-    </string-array>
+    <string name="smail_size">Smail Size</string>
+    <string name="medium_size">Medium Size</string>
+    <string name="large_size">Large Size</string>
+    <string name="best_size">Best Quality</string>
+    <string name="custom_file_size">Custom File Size</string>
+    <string name="advanced_compression">Advanced Compression</string>
+    <string name="multiple_compress_at_once">Multiple Compress at once</string>
+    <string name="completely_ad_free">Completely Ad Free</string>
+    <string name="vip_premium_features">VIP Premium Features</string>
+    <string name="_1_year_60_off">1 Year - 60% OFF</string>
+    <string name="month">1 Month</string>
+    <string name="lifetime_best_deal">Lifetime - Best Deal</string>
+    <string name="use_for_free">Use for free</string>
+    <string name="recurrent_billing_cancel_anytime_in_google_play_store_subcription_settings">Recurrent billing Cancel anytime in Google Play Store subscription settings</string>
+    <string name="title_intro_1">Compress your video,Without losing quality</string>
+    <string name="title_intro_2">Professional Trim and Crop Video</string>
+    <string name="title_intro_3">Seamless Video Convert Tools</string>
+    <string name="title_intro_4">Advance and Easy Videos Tools</string>
+    <string name="description_intro_1">Batch Processing Enable, Supported Format like Mp4,WEBM</string>
+    <string name="description_intro_2">Our app offers the best video trim and crop tools for social networks like Instagram and TikTok </string>
+    <string name="description_intro_3">We offers complete toolbox to video convert in different formats and mp3 format too</string>
+    <string name="description_intro_4">You can use features like video to gif,gif to video,video slow, fast, flip &amp; rotate, mute,looper, reverse, volume and merge</string>
 
 </resources>

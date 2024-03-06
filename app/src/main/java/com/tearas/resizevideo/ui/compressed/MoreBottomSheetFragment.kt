@@ -22,6 +22,7 @@ import com.tearas.resizevideo.utils.IntentUtils.passMediaOutput
 import com.tearas.resizevideo.utils.Utils
 import com.tearas.resizevideo.utils.Utils.share
 import java.io.File
+import java.io.FileInputStream
 
 class MoreBottomSheetFragment(private val mediaInfo: MediaInfo, private val onDelete: () -> Unit) :
     BaseBottomSheetFragment<FragmentBottomSheetBinding>(R.layout.fragment_bottom_sheet) {
@@ -38,7 +39,15 @@ class MoreBottomSheetFragment(private val mediaInfo: MediaInfo, private val onDe
             val pathInput = handleSaveResult.getPathInput(mediaInfo.path)
             val intent = Intent(requireActivity(), ResultActivity::class.java)
             val mediaInput = handleMediaVideo.getVideoByPath(pathInput.toString())
-
+            save.setOnClickListener {
+                val check = handleMediaVideo.saveFileToExternalStorage(
+                    requireActivity(),
+                    mediaInfo.isVideo(),
+                    FileInputStream(mediaInfo.path),
+                    mediaInfo.name
+                )
+                if (check == null) File(mediaInfo.path).delete()
+            }
             play.setOnClickListener {
                 val intent = Intent(requireActivity(), ShowVideoActivity::class.java)
                 startActivity(intent.apply {
@@ -85,7 +94,7 @@ class MoreBottomSheetFragment(private val mediaInfo: MediaInfo, private val onDe
     @SuppressLint("UseCompatLoadingForDrawables")
     private fun setData() {
         binding.apply {
-            name.text=mediaInfo.name
+            name.text = mediaInfo.name
             size.text = Formatter.formatFileSize(context, mediaInfo.size)
             time.text = mediaInfo.time
             if (mediaInfo.path.startsWith("content")) {

@@ -7,56 +7,8 @@
     android:layout_height="match_parent"
     android:paddingStart="15dp"
     android:paddingTop="15dp"
-    android:paddingRight="15dp">
+    android:paddingEnd="15dp">
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/count"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="17"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text=" Video"
-        android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@+id/count"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/sortBy"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Date added"
-        android:textColor="@color/maintream"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/appCompatImageView4"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/appCompatImageView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:rotation="90"
-        android:src="@drawable/baseline_compare_arrows_24"
-        app:layout_constraintBottom_toBottomOf="@+id/sortBy"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/sortBy" />
-
-    <View
-        android:id="@+id/view"
-        android:layout_width="wrap_content"
-        android:layout_height="1dp"
-        android:layout_marginTop="15dp"
-        android:background="@color/gray"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sortBy" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/videoAdapter"
@@ -65,7 +17,7 @@
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view"
-        app:spanCount="2"
+        app:layout_constraintTop_toTopOf="parent"
+        app:spanCount="3"
         tools:listitem="@layout/item_video" />
 </androidx.constraintlayout.widget.ConstraintLayout>

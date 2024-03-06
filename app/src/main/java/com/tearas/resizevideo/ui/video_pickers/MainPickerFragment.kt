@@ -7,6 +7,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.tearas.resizevideo.R
 import com.tearas.resizevideo.core.BaseFragment
 import com.tearas.resizevideo.databinding.FragmentMainPickerBinding
+import com.tearas.resizevideo.ui.OnTabSelectedListener
 
 class MainPickerFragment : BaseFragment<FragmentMainPickerBinding>(R.layout.fragment_main_picker) {
     override fun getViewBinding(view: View): FragmentMainPickerBinding {
@@ -16,21 +17,25 @@ class MainPickerFragment : BaseFragment<FragmentMainPickerBinding>(R.layout.frag
     override fun initView() {
         setToolbar(
             binding.mToolbar,
-            "Video Picker",
+            "Import",
             AppCompatResources.getDrawable(requireActivity(), R.drawable.baseline_arrow_back_24)!!,
             true
         )
         binding.apply {
             val pagerAdapter = ViewPagerAdapter(requireActivity())
             binding.viewPager.adapter = pagerAdapter
-            TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
-                if (position == 0) {
-                    tab.text = "Videos"
-                } else {
-                    tab.text = "Folders"
+
+            tabLayout.setOnTabSelectedListener(object : OnTabSelectedListener {
+                override fun onTabSelected(position: Int) {
+                    viewPager.setCurrentItem(position, true)
                 }
-            }.attach()
+            })
+            tabLayout.attach(viewPager, "Videos", "Folders")
+            tabLayout.setTabSelected(0)
         }
+
+
+
         binding.mToolbar.setNavigationOnClickListener {
             requireActivity().finish()
         }

@@ -80,12 +80,12 @@ class VideoPickerFragment :
     override fun initView() {
         binding.apply {
 
-            sortBy.setOnClickListener {
-                sortBy.showPopUpMenuSort {
-                    orderBy = it
-                    submitData(orderBy)
-                }
-            }
+//            sortBy.setOnClickListener {
+//                sortBy.showPopUpMenuSort {
+//                    orderBy = it
+//                    submitData(orderBy)
+//                }
+//            }
 
             videoAdapter.adapter = adapter
 
@@ -94,7 +94,6 @@ class VideoPickerFragment :
 
     private fun submitData(orderBy: String) {
         adapter.submitData = handlerVideo.getAllVideo(orderBy)
-        binding.count.text = adapter.submitData.size.toString()
         size = adapter.submitData.size
     }
 }

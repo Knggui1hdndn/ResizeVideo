@@ -132,7 +132,15 @@
                 android:text="@string/share_title"
                 app:icon="@drawable/share"
                 app:iconGravity="start" />
-
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/save"
+                style="@style/BTNMore"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:text="Save"
+                app:icon="@drawable/diskette"
+                app:iconGravity="start" />
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/delete"
                 style="@style/BTNMore"

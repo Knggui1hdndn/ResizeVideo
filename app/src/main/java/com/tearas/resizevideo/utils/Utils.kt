@@ -5,15 +5,15 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
-import android.os.Parcelable
 import android.widget.ImageView
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.FileProvider
 import com.bumptech.glide.Glide
-import com.tearas.resizevideo.MainActivity
+import com.tearas.resizevideo.ui.main.MainActivity
 import com.tearas.resizevideo.R
+import com.tearas.resizevideo.ffmpeg.MediaAction
 import com.tearas.resizevideo.model.MediaInfo
 import com.tearas.resizevideo.ui.result.ResultActivity
+import com.tearas.resizevideo.utils.IntentUtils.passActionMedia
 import com.tearas.resizevideo.utils.IntentUtils.passMediaInput
 import com.tearas.resizevideo.utils.IntentUtils.passMediaOutput
 import java.io.File
@@ -30,6 +30,7 @@ object Utils {
         val intent = Intent(this, ResultActivity::class.java)
         intent.passMediaOutput(mediaOutPut)
         intent.passMediaInput(mediaInput)
+        intent.passActionMedia(MediaAction.ExtractAudio)
         startActivity(intent)
     }
 
@@ -42,7 +43,7 @@ object Utils {
 
     @SuppressLint("SimpleDateFormat")
     private val simpleDateFormat = SimpleDateFormat("HH:mm:ss")
-        .apply { timeZone = TimeZone.getTimeZone("GMP") }
+        .apply { timeZone = TimeZone.getTimeZone("GMT") }
 
     private val decimalFormat = DecimalFormat("#").apply {
         roundingMode = RoundingMode.CEILING
@@ -50,6 +51,10 @@ object Utils {
 
     fun Float.formatToInt(): Int = decimalFormat.format(this).toInt()
     fun formatTime(time: Long): String = simpleDateFormat.format(time)
+    fun convertTimeToMiliSeconds(timeString: String): Long {
+        val date = simpleDateFormat.parse(timeString) ?: return 0
+        return date.time
+    }
 
     fun Context.shareMultiple(isVideo: Boolean, videoFilePaths: List<Uri>) {
         val shareIntent = Intent(Intent.ACTION_SEND_MULTIPLE)

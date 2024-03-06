@@ -1,149 +1,179 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:background="@android:color/transparent"
-    app:cardCornerRadius="15sp">
+<layout>
 
-    <androidx.cardview.widget.CardView
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="ChoseResolutionViewModel"
+            type="com.tearas.resizevideo.ui.select_compress.ChoseResolutionViewModel" />
+
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_margin="40dp"
-        app:cardCornerRadius="25sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:background="@android:color/transparent"
+        app:cardCornerRadius="15sp">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            style="@style/BackgroundScreen"
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="40dp"
+            app:cardCornerRadius="25sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            android:padding="15sp">
-
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="wrap_content"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                style="@style/BackgroundScreen"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:text="@string/chose_resolution"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
 
-            <RadioGroup
-                android:id="@+id/radioGroup"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="50dp"
-                android:checkedButton="@+id/option1"
-                android:orientation="vertical"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView">
+                android:padding="15sp">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp">
+                    android:layout_margin="10dp"
+                    android:text="@string/chose_resolution"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                    <androidx.appcompat.widget.AppCompatRadioButton
-                        android:id="@+id/option1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="35sp"
-                        android:text="240"
-                        android:textStyle="bold"
-                        app:buttonTint="@color/maintream"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                <RadioGroup
+                    android:id="@+id/radioGroup"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="50dp"
+                    android:checkedButton="@+id/option1"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView">
 
-                    <RadioButton
-                        android:id="@+id/option2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="35sp"
-                        android:text="360"
-                        android:textStyle="bold"
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp">
 
-                        app:buttonTint="@color/maintream"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        <RadioButton
+                            android:id="@+id/option1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="35sp"
+                            android:checked="@{ChoseResolutionViewModel.selectedRadioIndex.intValue()==0}"
+                            android:onClick="@{(view) -> ChoseResolutionViewModel.setSelectedRadioIndex(view,0)}"
+                            android:text="@{ChoseResolutionViewModel.resolutionOptions.size() >= 1   ? String.valueOf(ChoseResolutionViewModel.resolutionOptions.get(0)) : ``}"
+                            android:textStyle="bold"
+                            android:visibility="@{ChoseResolutionViewModel.resolutionOptions.size() >=1 ? View.VISIBLE :View.GONE}"
+                            app:buttonTint="@color/maintream"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
-                    <RadioButton
-                        android:id="@+id/option3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="35sp"
-                        android:text="460"
-                        android:textStyle="bold"
-                        app:buttonTint="@color/maintream"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/option1" />
+                        <RadioButton
+                            android:id="@+id/option2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="35sp"
+                            android:checked="@{ChoseResolutionViewModel.selectedRadioIndex.intValue()==1}"
 
-                    <RadioButton
-                        android:id="@+id/option4"
-                        android:layout_width="wrap_content"
+                            android:onClick="@{(view) -> ChoseResolutionViewModel.setSelectedRadioIndex(view,1)}"
+                            android:text="@{ChoseResolutionViewModel.resolutionOptions.size() >= 2  ? String.valueOf(ChoseResolutionViewModel.resolutionOptions.get(1)) : ``}"
+                            android:textStyle="bold"
+                            android:visibility="@{ChoseResolutionViewModel.resolutionOptions.size()>=2 ? View.VISIBLE :View.GONE}"
+                            app:buttonTint="@color/maintream"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
-                        android:layout_height="35sp"
-                        android:text="640"
-                        android:textStyle="bold"
-                        app:buttonTint="@color/maintream"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/option2" />
+                        <RadioButton
+                            android:id="@+id/option3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="35sp"
+                            android:checked="@{ChoseResolutionViewModel.selectedRadioIndex.intValue()==2}"
+                            android:onClick="@{(view) -> ChoseResolutionViewModel.setSelectedRadioIndex(view,2)}"
+                            android:text="@{ChoseResolutionViewModel.resolutionOptions.size() >= 3  ? String.valueOf(ChoseResolutionViewModel.resolutionOptions.get(2)) : ``}"
+                            android:textStyle="bold"
+                            android:visibility="@{ChoseResolutionViewModel.resolutionOptions.size()>=3? View.VISIBLE :View.GONE}"
+                            app:buttonTint="@color/maintream"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/option1" />
 
-                    <RadioButton
-                        android:id="@+id/option5"
-                        android:layout_width="wrap_content"
-                        android:layout_height="35sp"
-                        android:text="800"
-                        android:textStyle="bold"
+                        <RadioButton
+                            android:id="@+id/option4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="35sp"
+                            android:checked="@{ChoseResolutionViewModel.selectedRadioIndex.intValue()==3}"
+                            android:onClick="@{(view) -> ChoseResolutionViewModel.setSelectedRadioIndex(view,3)}"
+                            android:text="@{ChoseResolutionViewModel.resolutionOptions.size() >= 4  ? String.valueOf(ChoseResolutionViewModel.resolutionOptions.get(3)) : ``}"
 
-                        app:buttonTint="@color/maintream"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/option3" />
+                            android:textStyle="bold"
+                            android:visibility="@{ChoseResolutionViewModel.resolutionOptions.size()>=4? View.VISIBLE :View.GONE}"
+                            app:buttonTint="@color/maintream"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/option2" />
 
-                    <RadioButton
-                        android:id="@+id/custom"
-                        android:layout_width="wrap_content"
-                        android:layout_height="35sp"
-                        android:text="Custom"
-                        android:textStyle="bold"
-                        app:buttonTint="@color/maintream"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/option5" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                        <RadioButton
+                            android:id="@+id/option5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="35sp"
+                            android:checked="@{ChoseResolutionViewModel.selectedRadioIndex.intValue()==4}"
+                            android:onClick="@{(view) -> ChoseResolutionViewModel.setSelectedRadioIndex(view,4)}"
+                            android:text="@{ChoseResolutionViewModel.resolutionOptions.size() >= 5  ? String.valueOf(ChoseResolutionViewModel.resolutionOptions.get(4)) : ``}"
+                            android:textStyle="bold"
+                            android:visibility="@{ChoseResolutionViewModel.resolutionOptions.size()>=5 ? View.VISIBLE :View.GONE}"
+                            app:buttonTint="@color/maintream"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/option3" />
 
-            </RadioGroup>
+                        <RadioButton
+                            android:id="@+id/custom"
+                            android:layout_width="wrap_content"
+                            android:layout_height="35sp"
+                            android:checked="@{ChoseResolutionViewModel.selectedRadioIndex.intValue()==5}"
+                            android:onClick="@{(view) -> ChoseResolutionViewModel.setSelectedRadioIndex(view,5)}"
+                            android:text="@string/custom"
+                            android:textStyle="bold"
+                            app:buttonTint="@color/maintream"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/option5" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/save"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20sp"
-                android:background="@android:color/transparent"
-                android:text="@string/save"
-                android:textColor="@color/maintream"
-                app:cornerRadius="55dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
+                </RadioGroup>
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/dismiss"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20sp"
-                android:background="@android:color/transparent"
-                android:text="@string/dismiss"
-                android:textColor="@color/maintream"
-                app:cornerRadius="25dp"
-                app:layout_constraintEnd_toStartOf="@+id/save"
-                app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/save"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20sp"
+                    android:background="@android:color/transparent"
+                    android:text="@string/save"
+                    android:textColor="@color/maintream"
+                    app:cornerRadius="55dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/dismiss"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20sp"
+                    android:background="@android:color/transparent"
+                    android:text="@string/dismiss"
+                    android:textColor="@color/maintream"
+                    app:cornerRadius="25dp"
+                    app:layout_constraintEnd_toStartOf="@+id/save"
+                    app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

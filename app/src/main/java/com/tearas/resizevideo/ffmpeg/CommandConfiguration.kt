@@ -7,7 +7,10 @@ class CommandConfiguration {
         stringBuilder.append("${command.trim()} ")
         return this
     }
-
+    fun appendCommandNotSpace(command: String): CommandConfiguration {
+        stringBuilder.append(command.trim())
+        return this
+    }
     fun getCommand() = stringBuilder.toString().trim()
 
     companion object {
