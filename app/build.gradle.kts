@@ -66,7 +66,11 @@ android {
         dataBinding = true
     }
 
-
+//    packagingOptions {
+//        exclude("lib/x86_64/*")
+//        exclude("lib/x86/*")
+//        exclude("lib/armeabi-v7a/*")
+//    }
 }
 
 
